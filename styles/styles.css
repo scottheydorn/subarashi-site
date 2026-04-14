@@ -1,0 +1,249 @@
+/* Main CSS styles for Subarashi LLC website */
+body {
+    font-family: "Andale Mono", monospace;
+    background-color: #EDEDCC;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    color: #333;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    padding: 30px 0;
+    background: transparent !important;
+}
+
+.logo-container {
+    margin: 0 auto;
+    width: 60%;
+    max-width: 400px;
+    min-height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent !important;
+    background-color: transparent !important;
+}
+
+.logo {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    background: none !important;
+    background-color: transparent !important;
+}
+
+.navigation {
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+    margin: 20px 0;
+}
+
+.navigation a {
+    text-decoration: none;
+    color: #333;
+    margin: 0 20px;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+.navigation a:hover {
+    color: #0056b3;
+}
+
+.content {
+    padding: 40px 0;
+    min-height: 400px;
+}
+
+h1, h2, h3 {
+    font-weight: normal;
+}
+
+h1 {
+    font-size: 32px;
+    margin-bottom: 30px;
+}
+
+h2 {
+    font-size: 24px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+h3 {
+    font-size: 20px;
+    margin-top: 30px;
+}
+
+/* Services page styles */
+.service-box {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #fff;
+    border-left: 4px solid #0056b3;
+}
+
+/* About page styles */
+.about-section {
+    margin-bottom: 30px;
+}
+
+.team-member {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-left: 4px solid #0056b3;
+}
+
+.team-member h3 {
+    margin-top: 0;
+    font-size: 20px;
+}
+
+/* Contact page styles */
+.contact-info {
+    margin-bottom: 40px;
+}
+
+.contact-form {
+    background-color: #fff;
+    padding: 30px;
+    border-left: 4px solid #0056b3;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-family: "Andale Mono", monospace;
+    font-size: 16px;
+}
+
+textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+button {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-family: "Andale Mono", monospace;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #003d7e;
+}
+
+.address-map {
+    margin-top: 40px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.map-placeholder {
+    height: 300px;
+    background-color: #eee;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+    font-size: 18px;
+    border: 1px dashed #aaa;
+}
+
+/* Legal page styles */
+.legal-section {
+    margin-bottom: 40px;
+}
+
+footer {
+    text-align: center;
+    padding: 30px 0;
+    border-top: 1px solid #ddd;
+    font-size: 14px;
+    color: #666;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .logo-container {
+        width: 80%;
+    }
+    
+    .navigation {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .navigation a {
+        margin: 5px 0;
+    }
+}
+
+/* Fixed bottom-right image - moved to end of file for highest priority */
+#sandbox-link {
+    position: fixed !important;
+    bottom: 70px !important;
+    right: 20px !important;
+    z-index: 9999 !important;
+    width: 30px !important;
+    height: 30px !important;
+    display: block !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    border: none !important;
+    background: transparent !important;
+}
+
+#sandbox-link img {
+    width: 30px !important;
+    height: 30px !important;
+    display: block !important;
+}
+
+#sandbox-link:hover img {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+.fixed-bottom-image:hover {
+    opacity: 0.8;
+    cursor: pointer;
+}
+
+/* Additional rule to ensure the anchor containing the image doesn't affect positioning */
+a:has(.fixed-bottom-image) {
+    position: static;
+    display: inline;
+    margin: 0;
+    padding: 0;
+}
