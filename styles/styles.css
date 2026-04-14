@@ -57,13 +57,16 @@ img {
     height: 64px;
 }
 
-.nav-logo img {
-    height: 36px;
-    width: auto;
-    display: block;
-    background: #fff;
-    border-radius: 6px;
-    padding: 4px 10px;
+.nav-logo {
+    font-size: 18px;
+    letter-spacing: 3px;
+    text-transform: lowercase;
+    color: #e6edf3;
+    text-decoration: none;
+}
+
+.nav-logo:hover {
+    color: #1B9D6B;
 }
 
 .nav-links {
