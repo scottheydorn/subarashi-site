@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Services - Subarashi LLC</title>
+    <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-M8PHJ1F2ZN"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -11,54 +9,80 @@
         gtag('js', new Date());
         gtag('config', 'G-M8PHJ1F2ZN');
     </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - Subarashi LLC</title>
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-    <header>
-        <a href="index.html"><img src="images/subarashi-logo.png" alt="Subarashi LLC Logo"></a>
-        <nav>
-            <ul>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <img src="images/subarashi-logo.png" alt="Subarashi LLC">
+            </a>
+            <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle navigation">&#9776;</button>
+            <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
-                <li><a href="services.html">Services</a></li>
+                <li><a href="services.html" class="active">Services</a></li>
+                <li><a href="case-studies.html">Case Studies</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="contact.html">Contact</a></li>
                 <li><a href="legal.html">Legal</a></li>
             </ul>
-        </nav>
-    </header>
+        </div>
+    </nav>
 
-    <main>
-        <h1>Our Services</h1>
-        <p>Subarashi LLC offers comprehensive consulting services tailored to help businesses improve technology operations and develop and deliver products in existing and new markets.</p>
+    <div class="container">
+        <div class="page-header">
+            <span class="section-label">Services</span>
+            <h1>How we help</h1>
+            <p>Comprehensive consulting services for businesses navigating complex technology environments and market opportunities.</p>
+        </div>
 
-        <section>
-            <h2>Technology Operations &amp; Platform Engineering</h2>
-            <p>We help large, complex organizations design and build high-performing engineering platforms and DevOps capabilities that accelerate delivery, strengthen security, and reduce operational friction. Drawing on deep experience across DevOps, DevSecOps, application security, CI/CD pipeline design, source and version control strategy, change management, and Agile work management, we guide teams from assessment through implementation &mdash; standing up platform engineering organizations, establishing DevOps centers of excellence, and embedding security into every stage of the software lifecycle.</p>
+        <section class="section">
+            <div class="service-card">
+                <h3>Technology Operations & Platform Engineering</h3>
+                <p>We help large, complex organizations design and build high-performing engineering platforms and DevOps capabilities that accelerate delivery, strengthen security, and reduce operational friction. Drawing on deep experience across DevOps, DevSecOps, application security, CI/CD pipeline design, source and version control strategy, change management, and Agile work management, we guide teams from assessment through implementation &mdash; standing up platform engineering organizations, establishing DevOps centers of excellence, and embedding security into every stage of the software lifecycle.</p>
+            </div>
+
+            <div class="service-card">
+                <h3>Enterprise ERP & D365 Consulting</h3>
+                <p>We bring hands-on experience managing large-scale D365 Finance & Operations environments across global enterprises. Our expertise spans multi-region deployments, X++ customization lifecycle management, environment provisioning and drift detection, automated configuration synchronization, and CI/CD pipeline design for ERP workloads. We help organizations gain control over complex ERP landscapes and reduce the operational burden of maintaining consistency across dozens of environments.</p>
+            </div>
+
+            <div class="service-card">
+                <h3>Software Product Market Entry Strategy</h3>
+                <p>We partner with businesses to develop and execute effective market entry strategies for software products. Our comprehensive approach includes market potential analysis, strategic segmentation, and tailored go-to-market planning. We conduct thorough assessments of your product across critical dimensions including regulatory compliance, user experience design, internationalization capabilities, performance metrics, and service availability to ensure successful market penetration.</p>
+            </div>
+
+            <div class="service-card">
+                <h3>Market Research & Analysis</h3>
+                <p>Thorough market research services provide deep insights into industry trends, competitive landscape, and customer needs. We work to identify key opportunities and challenges to inform strategic decision-making and support resource allocation decisions.</p>
+            </div>
+
+            <div class="service-card">
+                <h3>Product Positioning & Branding</h3>
+                <p>We help clients effectively position solutions to resonate with target markets and communicate value proposition. This includes naming, messaging development, and differentiation strategies.</p>
+            </div>
+
+            <div class="service-card">
+                <h3>Go-to-Market Execution</h3>
+                <p>Beyond strategy development, we provide hands-on support with implementation, partner identification, compliance efforts, and launch coordination to ensure successful market entry and expansion.</p>
+            </div>
         </section>
 
-        <section>
-            <h2>Software Product Market Entry Strategy</h2>
-            <p>We partner with businesses to develop and execute effective market entry strategies for software products. Our comprehensive approach includes market potential analysis, strategic segmentation, and tailored go-to-market planning. We conduct thorough assessments of your product across critical dimensions including regulatory compliance, user experience design, internationalization capabilities, performance metrics, and service availability to ensure successful market penetration.</p>
+        <section class="section" style="text-align: center; padding-top: 0;">
+            <p style="color: #8b949e; margin-bottom: 24px;">Ready to discuss your project?</p>
+            <a href="contact.html" class="btn btn-primary">Get in Touch</a>
         </section>
 
-        <section>
-            <h2>Market Research & Analysis</h2>
-            <p>Thorough market research services provide deep insights into industry trends, competitive landscape, and customer needs. We work to identify key opportunities and challenges to inform strategic decision-making and support resource allocation decisions.</p>
-        </section>
+        <footer class="site-footer">
+            <p>&copy; 2026 Subarashi LLC. All rights reserved.</p>
+        </footer>
+    </div>
 
-        <section>
-            <h2>Product Positioning & Branding</h2>
-            <p>We help clients effectively position solutions to resonate with target markets and communicate value proposition. This includes naming, messaging development, and differentiation strategies.</p>
-        </section>
-
-        <section>
-            <h2>Go-to-Market Execution</h2>
-            <p>Beyond strategy development, we provide hands-on support with implementation, partner identification, compliance efforts, and launch coordination to ensure successful market entry and expansion.</p>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 Subarashi LLC. All rights reserved.</p>
-        <a href="sandbox.html"><img src="images/sandbox.png" alt="sandbox"></a>
-    </footer>
+    <a href="sandbox.html" class="sandbox-link">
+        <img src="images/sandbox.png" alt="sandbox">
+    </a>
 </body>
 </html>

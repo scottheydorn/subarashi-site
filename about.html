@@ -1,76 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M8PHJ1F2ZN"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-M8PHJ1F2ZN');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About - Subarashi LLC</title>
     <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <img src="images/subarashi-logo.png" alt="Subarashi LLC">
+            </a>
+            <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle navigation">&#9776;</button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="case-studies.html">Case Studies</a></li>
+                <li><a href="about.html" class="active">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="legal.html">Legal</a></li>
+            </ul>
+        </div>
+    </nav>
+
     <div class="container">
-        <header>
-            <div class="logo-container">
-                <a href="index.html">
-                    <img src="images/subarashi-logo.png" alt="Subarashi LLC Logo" class="logo">
-                </a>
-            </div>
-        </header>
-        
-        <nav class="navigation">
-            <a href="index.html">Home</a>
-            <a href="services.html">Services</a>
-            <a href="about.html">About</a>
-            <a href="contact.html">Contact</a>
-            <a href="legal.html">Legal</a>
-        </nav>
-        
-        <main class="content">
-            <div class="about-section">
+        <div class="page-header">
+            <span class="section-label">About</span>
+            <h1>Who we are</h1>
+            <p>Founded with a commitment to excellence in technology consulting.</p>
+        </div>
+
+        <section class="section section-divider">
+            <div class="section-header">
                 <h2>Our Story</h2>
-                <p>Subarashi was founded with a vision to help businesses successfully navigate the complex world of distributed systems and digital optimization. Subarashī is derived from 'subarashii' meaning "brilliant" or "wonderful" in Japanese, reflects our commitment to excellence in everything we do.</p>
-                <p>Based in Virginia, USA, Subarashi specializes in helping companies optimize their application lifecycle, market and manage solutions being introduced to the US market with a pragmatic focus on improving our client's customers experience and satisfaction.</p>
             </div>
-            
-            <div class="about-section">
+            <p style="color: #8b949e; font-size: 15px; line-height: 1.8;">Subarashi was founded with a vision to help businesses successfully navigate the complex world of distributed systems and digital optimization. Subarash&#299; is derived from 'subarashii' meaning "brilliant" or "wonderful" in Japanese, reflecting our commitment to excellence in everything we do.</p>
+            <p style="color: #8b949e; font-size: 15px; line-height: 1.8;">Based in Virginia, USA, Subarashi specializes in helping companies optimize their application lifecycle, manage complex technology environments, and build engineering platforms that accelerate delivery while maintaining operational rigor.</p>
+        </section>
+
+        <section class="section section-divider">
+            <div class="section-header">
                 <h2>Our Approach</h2>
-                <p>At Subarashi, we believe in a systematic, data-driven approach to consulting. We are familiar with and leverage a variety of development and delivery frameworks that best fit the desired outcome.</p>
-                <p>Our team brings together expertise in market research, go-to-market/strategic planning, product development and operations, providing comprehensive support at every stage of your growth journey.</p>
             </div>
-            
-            <div class="about-section">
+            <p style="color: #8b949e; font-size: 15px; line-height: 1.8;">We believe in a systematic, data-driven approach to consulting. We are familiar with and leverage a variety of development and delivery frameworks that best fit the desired outcome.</p>
+            <p style="color: #8b949e; font-size: 15px; line-height: 1.8;">Our team brings together expertise in platform engineering, enterprise ERP systems, DevOps practices, and strategic consulting &mdash; providing comprehensive support at every stage of your technology journey.</p>
+        </section>
+
+        <section class="section section-divider">
+            <div class="section-header">
                 <h2>People</h2>
-                
-                <div class="team-member">
-                    <h3>Scott Heydorn</h3>
-                    <p>
-Scott is a seasoned technology leader with over 13 years of experience driving digital transformation and managing complex technical programs. As the founder of Subarashi LLC, Scott brings extensive expertise in strategic technology consulting, product management, portfolio/program delivery, API development, cloud infrastructure, and Agile methodology to help clients better understand and optimize their development and delivery processes.
-
-Prior to establishing Subarashi LLC, Scott served as a Distinguished Consultant at Modus Create, where he provided executive-level engineering leadership and developed strategic technology roadmaps for enterprise clients. His career includes senior leadership roles at Ellucian, where he directed global engineering teams serving over 2,500 higher education institutions, and at The College Board, where he oversaw major digitization initiatives for AP and SAT programs.
-
-Throughout his career, Scott has demonstrated excellence in aligning technology solutions with business objectives, with start ups as well as large, established technology firms. His technical expertise spans cloud infrastructure implementations, DevOps optimization, API development, application security, system architecture.
-                        
-Scott proudly served in the United States Navy, where he honed his leadership skills and disciplined approach to problem-solving. His military experience provided a strong foundation in digital communications, logistics, team coordination, and operating under pressure in diverse physical and cultural environments – skills he continues to apply when helping clients navigate complex business challenges and technology implementations.
-
-Scott specializes in helping businesses navigate complex technology transitions, particularly in heterogenous environments that are dependent upon legacy technology but wish to leverage modern approaches. His consultative approach focuses on understanding each client's unique challenges and developing tailored solutions that drive efficiency and growth.
-
-Based in Chantilly, Virginia, Scott likes to spend his spare time with his family, working on vintage electronics and a 20 year old Jeep TJ.</p>
-                </div>
-            
-            <div class="about-section">
-                <h2>Our Values</h2>
-                <p>Excellence: We strive for excellence in all our client engagements.</p>
-                <p>Integrity: We maintain the highest standards of professional conduct.</p>
-                <p>Innovation: We continuously seek innovative solutions to complex problems.</p>
-                <p>Partnership: We form true partnerships with our clients, working collaboratively toward shared goals with constant, transparent and honest communication.</p>
             </div>
-        </main>
-        
-        <footer>
-            <p>&copy; 2025 Subarashi LLC. All rights reserved.</p>
+
+            <div class="team-member">
+                <h3>Scott Heydorn</h3>
+                <p>Scott is a seasoned technology leader with over 13 years of experience driving digital transformation and managing complex technical programs. As the founder of Subarashi LLC, Scott brings extensive expertise in strategic technology consulting, product management, portfolio/program delivery, API development, cloud infrastructure, and Agile methodology to help clients better understand and optimize their development and delivery processes.</p>
+
+                <p>Prior to establishing Subarashi LLC, Scott served as a Distinguished Consultant at Modus Create, where he provided executive-level engineering leadership and developed strategic technology roadmaps for enterprise clients. His career includes senior leadership roles at Ellucian, where he directed global engineering teams serving over 2,500 higher education institutions, and at The College Board, where he oversaw major digitization initiatives for AP and SAT programs.</p>
+
+                <p>Throughout his career, Scott has demonstrated excellence in aligning technology solutions with business objectives, with startups as well as large, established technology firms. His technical expertise spans cloud infrastructure implementations, DevOps optimization, API development, application security, and system architecture.</p>
+
+                <p>Scott proudly served in the United States Navy, where he honed his leadership skills and disciplined approach to problem-solving. His military experience provided a strong foundation in digital communications, logistics, team coordination, and operating under pressure in diverse physical and cultural environments &mdash; skills he continues to apply when helping clients navigate complex business challenges and technology implementations.</p>
+
+                <p>Scott specializes in helping businesses navigate complex technology transitions, particularly in heterogeneous environments that are dependent upon legacy technology but wish to leverage modern approaches. His consultative approach focuses on understanding each client's unique challenges and developing tailored solutions that drive efficiency and growth.</p>
+
+                <p>Based in Chantilly, Virginia, Scott likes to spend his spare time with his family, working on vintage electronics and a 20 year old Jeep TJ.</p>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="section-header">
+                <h2>Our Values</h2>
+            </div>
+
+            <div class="values-grid">
+                <div class="value-item">
+                    <h3>Excellence</h3>
+                    <p>We strive for excellence in all our client engagements.</p>
+                </div>
+                <div class="value-item">
+                    <h3>Integrity</h3>
+                    <p>We maintain the highest standards of professional conduct.</p>
+                </div>
+                <div class="value-item">
+                    <h3>Innovation</h3>
+                    <p>We continuously seek innovative solutions to complex problems.</p>
+                </div>
+                <div class="value-item">
+                    <h3>Partnership</h3>
+                    <p>We form true partnerships with our clients, working collaboratively toward shared goals with constant, transparent and honest communication.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <p>&copy; 2026 Subarashi LLC. All rights reserved.</p>
         </footer>
     </div>
-    <a href="sandbox.html" style="position: fixed; bottom: 70px; right: 20px; z-index: 9999; width: 30px; height: 30px; display: block; padding: 0; margin: 0; border: none;">
-        <img src="images/sandbox.png" alt="sandbox" width="30" height="30" style="width: 100%; height: 100%; display: block;">
+
+    <a href="sandbox.html" class="sandbox-link">
+        <img src="images/sandbox.png" alt="sandbox">
     </a>
 </body>
 </html>

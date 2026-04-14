@@ -4,242 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sandbox - Subarashi LLC</title>
-    <style>
-        body {
-            font-family: "Andale Mono", monospace;
-            background-color: #1B9D6B; /* Emerald green background */
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-            color: #333;
-        }
-
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            text-align: center;
-            padding: 30px 0;
-            color: white;
-        }
-
-        h1 {
-            font-size: 36px;
-            margin-bottom: 30px;
-            font-weight: normal;
-        }
-
-        .description {
-            text-align: center;
-            color: white;
-            margin-bottom: 40px;
-            font-size: 18px;
-            padding: 0 10%;
-        }
-
-        /* Project Table Styles */
-        .project-table {
-            width: 100%;
-            background-color: white; /* Keep table background white */
-            border-radius: 8px;
-            border-collapse: collapse;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 40px;
-        }
-
-        .project-table th {
-            background-color: #FFFF00; /* Yellow background for header */
-            color: #FF0000; /* Red font */
-            text-align: left;
-            padding: 15px;
-            font-weight: normal;
-            font-size: 18px;
-            text-transform: uppercase; /* Capitalize the labels */
-        }
-
-        .project-table td {
-            padding: 15px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .project-table tr:last-child td {
-            border-bottom: none;
-        }
-
-        .project-table tr:hover {
-            background-color: #f5f5f5;
-        }
-
-        /* Column widths */
-        .project-table th:nth-child(1),
-        .project-table td:nth-child(1) {
-            width: 20%;
-        }
-
-        .project-table th:nth-child(2),
-        .project-table td:nth-child(2) {
-            width: 60%;
-        }
-
-        .project-table th:nth-child(3),
-        .project-table td:nth-child(3) {
-            width: 20%;
-        }
-
-        .project-link {
-            color: #0056b3;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .project-link:hover {
-            color: #003d7e;
-            text-decoration: underline;
-        }
-
-        /* Project sections hidden by default, shown when navigated to */
-        .project-section {
-            display: none;
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .project-section:target {
-            display: block;
-        }
-
-        h2 {
-            font-size: 24px;
-            margin-top: 0;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #ddd;
-            font-weight: normal;
-        }
-
-        p {
-            margin-bottom: 20px;
-        }
-
-        .back-to-table {
-            display: inline-block;
-            margin-top: 20px;
-            color: #0056b3;
-            text-decoration: none;
-        }
-
-        .back-to-table:hover {
-            text-decoration: underline;
-        }
-    </style>
+    <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>sandbox</h1>
-        </header>
-        
-        <div class="description">
-            <p>Welcome to our sandbox environment. This is where we experiment with various projects and creative ideas. Each project is "sandboxed" - isolated in its own section for focused development and testing before being integrated into our main platforms.</p>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <img src="images/subarashi-logo.png" alt="Subarashi LLC">
+            </a>
+            <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle navigation">&#9776;</button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="case-studies.html">Case Studies</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="legal.html">Legal</a></li>
+            </ul>
         </div>
-        
+    </nav>
+
+    <div class="container">
+        <div class="sandbox-hero">
+            <h1>sandbox</h1>
+            <p>Experimental projects and creative ideas. Each project is isolated in its own section for focused development and testing.</p>
+        </div>
+
         <!-- Project Table -->
         <table class="project-table" id="project-list">
             <thead>
                 <tr>
-                    <th>PROJECT</th>
-                    <th>DESCRIPTION</th>
-                    <th>LINK</th>
+                    <th>Project</th>
+                    <th>Description</th>
+                    <th>Link</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- 
-                PROJECT ROW TEMPLATE:
-                <tr>
-                    <td>Project Name</td>
-                    <td>Brief description of the project</td>
-                    <td><a href="#project-id" class="project-link">View Project</a></td>
-                </tr>
-                -->
-                
-                <!-- First project row -->
                 <tr>
                     <td>Song of the Day</td>
                     <td>Daily music selections with Spotify preview streams</td>
                     <td><a href="#song-of-the-day" class="project-link">View Project</a></td>
                 </tr>
-                
-                <!-- Second project row (example) -->
                 <tr>
                     <td>Weather Widget</td>
                     <td>Interactive weather forecast display using weather API</td>
                     <td><a href="#weather-widget" class="project-link">View Project</a></td>
                 </tr>
-                
-                <!-- TO ADD MORE PROJECTS:
-                1. Copy the project row template above
-                2. Paste it before this comment
-                3. Update the project name, description, and link href with a unique ID
-                4. Create a corresponding project section below with the same ID
-                -->
             </tbody>
         </table>
-        
+
         <!-- Individual Project Sections -->
         <div id="song-of-the-day" class="project-section">
             <h2>Song of the Day</h2>
             <p>Our Song of the Day project showcases a daily music selection using Spotify preview streams. Discover new music or revisit classics through our curated picks, updated every 24 hours.</p>
-            <p>Each song comes with a short description, genre tags, and a 30-second preview stream directly from Spotify. This allows you to sample new music without leaving our site.</p>
-            
+            <p>Each song comes with a short description, genre tags, and a 30-second preview stream directly from Spotify.</p>
+
             <div class="spotify-container">
-                <!-- Placeholder for Spotify embed -->
                 <p><i>Spotify preview stream will appear here once the project is fully implemented.</i></p>
-                <p><i>Note: This will utilize the Spotify Web API to display track information and play 30-second previews of selected songs.</i></p>
             </div>
-            
-            <a href="#project-list" class="back-to-table">← Back to Projects</a>
+
+            <a href="#project-list" class="back-to-table">&larr; Back to Projects</a>
         </div>
-        
+
         <div id="weather-widget" class="project-section">
             <h2>Weather Widget</h2>
             <p>The Weather Widget project provides real-time weather information in an interactive display format. Users can check current conditions and forecasts for any location worldwide.</p>
-            <p>This widget will use the OpenWeather API to fetch accurate weather data and present it in a user-friendly interface with icons representing different weather conditions.</p>
-            
+            <p>This widget will use the OpenWeather API to fetch accurate weather data and present it in a user-friendly interface.</p>
+
             <div class="weather-container">
-                <!-- Placeholder for weather widget -->
                 <p><i>Interactive weather display will appear here once the project is fully implemented.</i></p>
-                <p><i>Note: This will utilize the OpenWeather API to display current conditions and forecasts.</i></p>
             </div>
-            
-            <a href="#project-list" class="back-to-table">← Back to Projects</a>
+
+            <a href="#project-list" class="back-to-table">&larr; Back to Projects</a>
         </div>
-        
-        <!-- 
-        PROJECT SECTION TEMPLATE:
-        <div id="project-id" class="project-section">
-            <h2>Project Name</h2>
-            <p>Description paragraph 1.</p>
-            <p>Description paragraph 2.</p>
-            
-            <div class="project-content">
-                <!-- Project-specific content -->
-            </div>
-            
-            <a href="#project-list" class="back-to-table">← Back to Projects</a>
-        </div>
-        -->
+
+        <footer class="site-footer">
+            <p>&copy; 2026 Subarashi LLC. All rights reserved.</p>
+        </footer>
     </div>
-    
-    <!-- Fixed link back to home -->
-    <a href="index.html" style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; background-color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">
-        <img src="images/home.png" alt="Subarashi Home" width="30" height="30">
+
+    <a href="index.html" class="sandbox-home-link">
+        <img src="images/home.png" alt="Home" width="24" height="24">
     </a>
 </body>
 </html>

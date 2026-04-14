@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-M8PHJ1F2ZN"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-M8PHJ1F2ZN');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Studies - Subarashi LLC</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <img src="images/subarashi-logo.png" alt="Subarashi LLC">
+            </a>
+            <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle navigation">&#9776;</button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="case-studies.html" class="active">Case Studies</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="legal.html">Legal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <span class="section-label">Case Studies</span>
+            <h1>Work that speaks for itself</h1>
+            <p>Select engagements demonstrating our experience with large-scale enterprise technology transformations.</p>
+        </div>
+
+        <!-- Case Study 1: Global ERP -->
+        <section class="section">
+            <div class="case-study">
+                <div class="case-study-header">
+                    <h3>Global ERP Platform Modernization</h3>
+                    <span class="industry">Fortune 500 Consumer Goods Manufacturer</span>
+                </div>
+
+                <h4>Challenge</h4>
+                <p>A global manufacturer operating across four continents needed to consolidate and modernize its ERP landscape onto Microsoft Dynamics 365 Finance & Operations. The organization managed 15+ legal entities across North America, Europe, and Asia-Pacific, each with distinct regulatory requirements, localization needs, and operational workflows. The existing environment sprawl &mdash; dozens of sandbox, test, and production instances &mdash; had grown organically with no standardized deployment process, leading to configuration drift, inconsistent code versions, and unpredictable deployment outcomes.</p>
+
+                <h4>Approach</h4>
+                <ul>
+                    <li>Designed a unified X++ codebase strategy that merged region-specific customizations into a single deployable package, eliminating branch-per-region complexity and enabling a shared release cadence</li>
+                    <li>Built automated environment inventory tooling that continuously monitors 20+ D365 environments, comparing application build versions, platform versions, and Electronic Reporting configurations against a designated truth-source environment</li>
+                    <li>Implemented automated drift detection and remediation pipelines that identify code, configuration, and ER divergence across environments and can trigger targeted deployments to bring drifted environments back into alignment</li>
+                    <li>Established DMF-based configuration synchronization to replicate data management framework settings, number sequences, and system parameters across environments consistently</li>
+                    <li>Created a Power Platform-based environment management dashboard providing real-time visibility into environment health, version status, and deployment history</li>
+                </ul>
+
+                <h4>Results</h4>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <span class="value">4</span>
+                        <span class="label">Regions</span>
+                    </div>
+                    <div class="metric">
+                        <span class="value">15+</span>
+                        <span class="label">Legal Entities</span>
+                    </div>
+                    <div class="metric">
+                        <span class="value">20+</span>
+                        <span class="label">Environments Managed</span>
+                    </div>
+                    <div class="metric">
+                        <span class="value">1</span>
+                        <span class="label">Unified Codebase</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Case Study 2: DevOps Transformation -->
+        <section class="section">
+            <div class="case-study">
+                <div class="case-study-header">
+                    <h3>Enterprise DevOps & Platform Engineering Transformation</h3>
+                    <span class="industry">Global Enterprise &mdash; Technology Operations</span>
+                </div>
+
+                <h4>Challenge</h4>
+                <p>A large enterprise with a complex technology stack spanning legacy on-premises systems and modern cloud workloads needed to establish a cohesive DevOps practice. Development teams operated in silos with inconsistent tooling, manual deployment processes, and limited visibility into pipeline health. Source control practices varied across teams &mdash; some using TFVC, others on Git &mdash; with no standardized branching strategy or code review process. Security was treated as a gate at the end of the release cycle rather than embedded throughout.</p>
+
+                <h4>Approach</h4>
+                <ul>
+                    <li>Assessed the existing toolchain, team structures, and delivery processes across multiple business units to establish a baseline maturity model</li>
+                    <li>Designed and implemented CI/CD pipelines in Azure DevOps supporting both legacy TFVC-based projects and modern Git repositories, including automated build validation, artifact management, and multi-stage deployment orchestration</li>
+                    <li>Established source control migration strategy and governance, moving teams from TFVC to Git with trunk-based development patterns while maintaining operational continuity</li>
+                    <li>Integrated application security scanning (SAST, DAST, dependency analysis) directly into pipeline stages, shifting security left without adding friction to the developer workflow</li>
+                    <li>Created reusable pipeline templates and self-service tooling that enabled teams to onboard to standardized practices without requiring dedicated DevOps support</li>
+                    <li>Implemented Agile work management practices and established metrics dashboards for deployment frequency, lead time, change failure rate, and mean time to recovery</li>
+                </ul>
+
+                <h4>Results</h4>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <span class="value">200+</span>
+                        <span class="label">Developers Onboarded</span>
+                    </div>
+                    <div class="metric">
+                        <span class="value">50+</span>
+                        <span class="label">Pipelines Standardized</span>
+                    </div>
+                    <div class="metric">
+                        <span class="value">80%</span>
+                        <span class="label">Reduction in Manual Steps</span>
+                    </div>
+                    <div class="metric">
+                        <span class="value">Shift-Left</span>
+                        <span class="label">Security Integration</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Case Study 3: Environment Automation -->
+        <section class="section">
+            <div class="case-study">
+                <div class="case-study-header">
+                    <h3>Automated Environment Management & Drift Detection</h3>
+                    <span class="industry">Enterprise ERP Operations</span>
+                </div>
+
+                <h4>Challenge</h4>
+                <p>Managing a fleet of D365 Finance & Operations environments across development, test, staging, and production tiers &mdash; each potentially at different code versions, platform updates, and configuration states &mdash; created significant operational risk. Teams discovered environment inconsistencies only during testing or, worse, during production deployments. There was no centralized view of environment health and no automated way to detect when an environment had drifted from its expected state.</p>
+
+                <h4>Approach</h4>
+                <ul>
+                    <li>Built an automated nightly inventory pipeline that collects metadata from Power Platform Admin APIs, LCS APIs, and Dataverse to create a comprehensive snapshot of every environment's current state</li>
+                    <li>Developed drift analysis logic that compares each environment against a designated truth-source environment across three dimensions: application code version, platform version, and Electronic Reporting solution versions</li>
+                    <li>Implemented conditional remediation stages that can automatically deploy the correct unified package, synchronize DMF configurations, or replicate ER solutions to drifted environments when triggered</li>
+                    <li>Created a structured environment description standard using machine-parseable metadata fields (purpose, tier, region, owner, freeze status) embedded in environment descriptions for automated governance</li>
+                    <li>Integrated the inventory and drift data into a web-based dashboard providing at-a-glance visibility with progressive data loading to handle rate-limited API responses gracefully</li>
+                </ul>
+
+                <h4>Results</h4>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <span class="value">Nightly</span>
+                        <span class="label">Automated Scans</span>
+                    </div>
+                    <div class="metric">
+                        <span class="value">3-Axis</span>
+                        <span class="label">Drift Detection</span>
+                    </div>
+                    <div class="metric">
+                        <span class="value">Minutes</span>
+                        <span class="label">Time to Detect Drift</span>
+                    </div>
+                    <div class="metric">
+                        <span class="value">Automated</span>
+                        <span class="label">Remediation</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" style="text-align: center; padding-top: 0;">
+            <p style="color: #8b949e; margin-bottom: 24px;">Want to discuss a similar challenge?</p>
+            <a href="contact.html" class="btn btn-primary">Get in Touch</a>
+        </section>
+
+        <footer class="site-footer">
+            <p>&copy; 2026 Subarashi LLC. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <a href="sandbox.html" class="sandbox-link">
+        <img src="images/sandbox.png" alt="sandbox">
+    </a>
+</body>
+</html>
