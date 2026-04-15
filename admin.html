@@ -268,14 +268,19 @@
             return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
+        function showDashboard() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('footer').style.display = 'block';
+            document.getElementById('login-error').style.display = 'none';
+        }
+
         async function authenticate() {
             const pw = document.getElementById('admin-password').value;
             const hash = await sha256(pw);
             if (hash === PASSWORD_HASH) {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'block';
-                document.getElementById('footer').style.display = 'block';
-                document.getElementById('login-error').style.display = 'none';
+                sessionStorage.setItem('admin-auth', hash);
+                showDashboard();
                 loadDashboard();
             } else {
                 document.getElementById('login-error').style.display = 'block';
@@ -283,11 +288,20 @@
         }
 
         function logout() {
+            sessionStorage.removeItem('admin-auth');
             document.getElementById('dashboard').style.display = 'none';
             document.getElementById('footer').style.display = 'none';
             document.getElementById('login-screen').style.display = 'flex';
             document.getElementById('admin-password').value = '';
         }
+
+        // Auto-restore session on page load
+        (function checkSession() {
+            if (sessionStorage.getItem('admin-auth') === PASSWORD_HASH) {
+                showDashboard();
+                loadDashboard();
+            }
+        })();
 
         document.getElementById('admin-password').addEventListener('keydown', (e) => {
             if (e.key === 'Enter') authenticate();
@@ -296,12 +310,24 @@
         // ===== GoatCounter API =====
         async function gcFetch(endpoint) {
             const url = `https://${GC_SITE}.goatcounter.com/api/v0${endpoint}`;
-            const resp = await fetch(url, {
-                headers: { 'Authorization': 'Bearer ' + GC_TOKEN }
-            });
-            if (!resp.ok) throw new Error(`API returned ${resp.status}`);
-            return resp.json();
+            for (let attempt = 0; attempt < 3; attempt++) {
+                if (attempt > 0) await sleep(1000 * attempt);
+                try {
+                    const resp = await fetch(url, {
+                        headers: { 'Authorization': 'Bearer ' + GC_TOKEN }
+                    });
+                    if (resp.status === 429) {
+                        continue; // retry after delay
+                    }
+                    if (!resp.ok) throw new Error(`API returned ${resp.status}`);
+                    return resp.json();
+                } catch (err) {
+                    if (attempt === 2) throw err;
+                }
+            }
         }
+
+        function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
         function formatDate(d) {
             return d.toISOString().split('T')[0];
@@ -314,18 +340,24 @@
 
             try {
                 const today = new Date();
-                const sevenAgo = new Date(today); sevenAgo.setDate(sevenAgo.getDate() - 7);
                 const thirtyAgo = new Date(today); thirtyAgo.setDate(thirtyAgo.getDate() - 30);
 
-                // Fetch stats sequentially to avoid 429 rate limit (4 req/s)
-                const totalToday = await gcFetch(`/stats/total?start=${formatDate(today)}&end=${formatDate(today)}`);
-                const total7d = await gcFetch(`/stats/total?start=${formatDate(sevenAgo)}&end=${formatDate(today)}`);
+                // Single call to get 30-day stats (includes daily breakdown)
                 const total30d = await gcFetch(`/stats/total?start=${formatDate(thirtyAgo)}&end=${formatDate(today)}`);
+                await sleep(300);
                 const pages30d = await gcFetch(`/stats/hits?start=${formatDate(thirtyAgo)}&end=${formatDate(today)}&limit=10&daily=true`);
 
-                const todayCount = totalToday.total || totalToday.total_display || 0;
-                const weekCount = total7d.total || total7d.total_display || 0;
-                const monthCount = total30d.total || total30d.total_display || 0;
+                // Compute today/7d/30d from the daily breakdown in total30d
+                const stats = total30d.stats || [];
+                const todayStr = formatDate(today);
+                const sevenAgo = new Date(today); sevenAgo.setDate(sevenAgo.getDate() - 7);
+                const sevenAgoStr = formatDate(sevenAgo);
+
+                let todayCount = 0, weekCount = 0, monthCount = total30d.total || 0;
+                for (const s of stats) {
+                    if (s.day === todayStr) todayCount = s.daily || 0;
+                    if (s.day >= sevenAgoStr) weekCount += (s.daily || 0);
+                }
 
                 let html = '';
 
@@ -347,20 +379,10 @@
                     </div>
                 `;
 
-                // Daily chart (last 30 days)
-                if (pages30d.hits && pages30d.hits.length > 0) {
-                    // Aggregate daily totals across all pages
-                    const dailyTotals = {};
-                    for (const page of pages30d.hits) {
-                        if (!page.stats) continue;
-                        for (const dayStat of page.stats) {
-                            const day = dayStat.day;
-                            dailyTotals[day] = (dailyTotals[day] || 0) + dayStat.daily;
-                        }
-                    }
-
-                    const days = Object.keys(dailyTotals).sort();
-                    const values = days.map(d => dailyTotals[d]);
+                // Daily chart from total30d.stats
+                if (stats.length > 0) {
+                    const days = stats.map(s => s.day);
+                    const values = stats.map(s => s.daily || 0);
                     const maxVal = Math.max(...values, 1);
 
                     html += '<div class="dashboard-section"><h3>Daily Views (30 Days)</h3><div class="chart">';
@@ -374,8 +396,10 @@
                         html += `<div class="chart-label">${label}</div>`;
                     }
                     html += '</div></div>';
+                }
 
-                    // Top pages table
+                // Top pages table
+                if (pages30d.hits && pages30d.hits.length > 0) {
                     const pageStats = pages30d.hits.map(p => ({
                         path: p.path,
                         count: p.count
@@ -392,11 +416,21 @@
                     html += '</tbody></table></div>';
                 }
 
-                content.innerHTML = html;
+                // Cache results
+                sessionStorage.setItem('admin-cache', JSON.stringify({ html, ts: Date.now() }));
+                content.innerHTML = html || '<div class="loading-msg">No analytics data yet. Visit a few pages to generate data.</div>';
 
             } catch (err) {
                 console.error('Dashboard load failed:', err);
-                content.innerHTML = `<div class="error-msg">Failed to load analytics: ${escapeHtml(err.message)}<br><br>Make sure your GoatCounter site code and API token are configured in admin.html.</div>`;
+                // Try to show cached data
+                const cached = sessionStorage.getItem('admin-cache');
+                if (cached) {
+                    const { html, ts } = JSON.parse(cached);
+                    const age = Math.round((Date.now() - ts) / 60000);
+                    content.innerHTML = html + `<div class="loading-msg" style="margin-top:16px;">Showing cached data from ${age} min ago. Live refresh failed: ${escapeHtml(err.message)}</div>`;
+                } else {
+                    content.innerHTML = `<div class="error-msg">Failed to load analytics: ${escapeHtml(err.message)}<br><br>This may be caused by an ad blocker. Try disabling it for this page.</div>`;
+                }
             }
         }
 
