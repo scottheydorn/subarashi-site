@@ -329,8 +329,8 @@
 
         function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-        function formatDate(d) {
-            return d.toISOString().split('T')[0];
+        function formatDateISO(d) {
+            return d.toISOString();
         }
 
         // ===== Dashboard =====
@@ -339,19 +339,20 @@
             content.innerHTML = '<div class="loading-msg">Loading analytics...</div>';
 
             try {
-                const today = new Date();
-                const thirtyAgo = new Date(today); thirtyAgo.setDate(thirtyAgo.getDate() - 30);
+                const now = new Date();
+                const todayStart = new Date(now); todayStart.setHours(0, 0, 0, 0);
+                const thirtyAgo = new Date(todayStart); thirtyAgo.setDate(thirtyAgo.getDate() - 30);
 
-                // Single call to get 30-day stats (includes daily breakdown)
-                const total30d = await gcFetch(`/stats/total?start=${formatDate(thirtyAgo)}&end=${formatDate(today)}`);
+                // Fetch stats — use ISO timestamps (GoatCounter ignores YYYY-MM-DD format)
+                const total30d = await gcFetch(`/stats/total?start=${formatDateISO(thirtyAgo)}&end=${formatDateISO(now)}`);
                 await sleep(300);
-                const pages30d = await gcFetch(`/stats/hits?start=${formatDate(thirtyAgo)}&end=${formatDate(today)}&limit=10&daily=true`);
+                const pages30d = await gcFetch(`/stats/hits?start=${formatDateISO(thirtyAgo)}&end=${formatDateISO(now)}&limit=10&daily=true`);
 
                 // Compute today/7d/30d from the daily breakdown in total30d
                 const stats = total30d.stats || [];
-                const todayStr = formatDate(today);
-                const sevenAgo = new Date(today); sevenAgo.setDate(sevenAgo.getDate() - 7);
-                const sevenAgoStr = formatDate(sevenAgo);
+                const todayStr = todayStart.toISOString().split('T')[0];
+                const sevenAgo = new Date(todayStart); sevenAgo.setDate(sevenAgo.getDate() - 7);
+                const sevenAgoStr = sevenAgo.toISOString().split('T')[0];
 
                 let todayCount = 0, weekCount = 0, monthCount = total30d.total || 0;
                 for (const s of stats) {
