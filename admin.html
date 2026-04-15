@@ -317,13 +317,11 @@
                 const sevenAgo = new Date(today); sevenAgo.setDate(sevenAgo.getDate() - 7);
                 const thirtyAgo = new Date(today); thirtyAgo.setDate(thirtyAgo.getDate() - 30);
 
-                // Fetch total stats for different ranges
-                const [totalToday, total7d, total30d, pages30d] = await Promise.all([
-                    gcFetch(`/stats/total?start=${formatDate(today)}&end=${formatDate(today)}`),
-                    gcFetch(`/stats/total?start=${formatDate(sevenAgo)}&end=${formatDate(today)}`),
-                    gcFetch(`/stats/total?start=${formatDate(thirtyAgo)}&end=${formatDate(today)}`),
-                    gcFetch(`/stats/hits?start=${formatDate(thirtyAgo)}&end=${formatDate(today)}&limit=10&daily=true`)
-                ]);
+                // Fetch stats sequentially to avoid 429 rate limit (4 req/s)
+                const totalToday = await gcFetch(`/stats/total?start=${formatDate(today)}&end=${formatDate(today)}`);
+                const total7d = await gcFetch(`/stats/total?start=${formatDate(sevenAgo)}&end=${formatDate(today)}`);
+                const total30d = await gcFetch(`/stats/total?start=${formatDate(thirtyAgo)}&end=${formatDate(today)}`);
+                const pages30d = await gcFetch(`/stats/hits?start=${formatDate(thirtyAgo)}&end=${formatDate(today)}&limit=10&daily=true`);
 
                 const todayCount = totalToday.total || totalToday.total_display || 0;
                 const weekCount = total7d.total || total7d.total_display || 0;
