@@ -48,8 +48,8 @@
                 </tr>
                 <tr>
                     <td>songspot.fm</td>
-                    <td>Music discovery and playlist curation platform</td>
-                    <td><a href="https://songspot.fm" class="project-link" target="_blank" rel="noopener">songspot.fm</a></td>
+                    <td>Daily music discovery platform &mdash; one curated song per day</td>
+                    <td><a href="#songspot-fm" class="project-link">View Project</a></td>
                 </tr>
                 <tr>
                     <td>Pragotron Master Clock</td>
@@ -73,6 +73,106 @@
             <div class="spotify-container">
                 <p><i>Spotify preview stream will appear here once the project is fully implemented.</i></p>
             </div>
+
+            <a href="#project-list" class="back-to-table">&larr; Back to Projects</a>
+        </div>
+
+        <div id="songspot-fm" class="project-section">
+            <h2>songspot.fm</h2>
+
+            <p><a href="https://songspot.fm" target="_blank" rel="noopener">songspot.fm</a>
+            is a daily music discovery platform that surfaces one curated song per day.
+            Visitors get album artwork, a short editorial description, and a 30-second
+            preview via the iTunes Search API. Registered users unlock the full archive;
+            those with Apple Music subscriptions can connect their accounts for
+            full-track playback directly in the browser.</p>
+
+            <h3>How it was built</h3>
+
+            <p>songspot.fm was built almost entirely through conversation with
+            <strong>Claude Code</strong> (Anthropic&rsquo;s CLI agent, powered by
+            Claude Sonnet 4). From initial scaffolding through production deployment,
+            every component &mdash; database schema, API routes, authentication,
+            MusicKit integration, admin tooling &mdash; was authored, debugged, and
+            iterated on within Claude Code sessions. The project serves as a
+            real-world proof-of-concept for AI-assisted application development
+            at production quality.</p>
+
+            <h3>Architecture</h3>
+
+            <p>The application is a server-rendered Next.js 14 App Router project
+            with a clear separation between server and client components. Pages
+            follow a consistent pattern: a server-side <code>page.tsx</code> handles
+            auth checks and data fetching, then renders a <code>page-client.tsx</code>
+            client component for interactivity.</p>
+
+            <p>The system is organised into five layers:</p>
+
+            <ol>
+                <li><strong>Data layer</strong> &mdash; SQLite via better-sqlite3 with
+                    WAL mode for concurrent reads. Three tables: <code>admin_users</code>,
+                    <code>users</code> (with lockout tracking and Apple Music connection
+                    state), and <code>tracks</code> (scheduled songs with Apple Music
+                    metadata). The database auto-initializes its schema on first
+                    import.</li>
+                <li><strong>API layer</strong> &mdash; RESTful endpoints organised by
+                    domain: <code>/api/auth</code> (user login/register/logout),
+                    <code>/api/admin</code> (track CRUD and scheduling),
+                    <code>/api/tracks</code> (public today/archive),
+                    <code>/api/apple-music/search</code> (iTunes proxy), and
+                    <code>/api/musickit/token</code> (JWT generation for MusicKit
+                    playback).</li>
+                <li><strong>Authentication</strong> &mdash; two separate session domains
+                    (admin and user), both using iron-session encrypted cookies with
+                    7-day expiry. Account lockout triggers after 5 failed attempts
+                    with a 15-minute cooldown. Passwords hashed with bcrypt at
+                    cost 12.</li>
+                <li><strong>Music integration</strong> &mdash; iTunes Search API
+                    provides free 30-second previews and metadata. Apple MusicKit JS
+                    SDK v3 enables full-track streaming for subscribers, with
+                    server-side JWT token generation using the <code>jose</code>
+                    library.</li>
+                <li><strong>Admin tooling</strong> &mdash; a protected admin panel for
+                    searching the iTunes catalog, writing editorial descriptions,
+                    scheduling tracks to specific dates, and monitoring listener
+                    activity.</li>
+            </ol>
+
+            <h3>Stack</h3>
+
+            <table class="project-table">
+                <tbody>
+                    <tr><td>Framework</td><td>Next.js 14 (App Router) / React 19</td></tr>
+                    <tr><td>Language</td><td>TypeScript</td></tr>
+                    <tr><td>Database</td><td>SQLite (better-sqlite3, WAL mode)</td></tr>
+                    <tr><td>Styling</td><td>Tailwind CSS &mdash; dark emerald theme</td></tr>
+                    <tr><td>Auth</td><td>iron-session (encrypted cookies) + bcryptjs</td></tr>
+                    <tr><td>Music</td><td>iTunes Search API + Apple MusicKit JS SDK v3</td></tr>
+                    <tr><td>Hosting</td><td>Railway (nixpacks builder)</td></tr>
+                    <tr><td>Storage</td><td>Railway persistent volume (SQLite at <code>/data</code>)</td></tr>
+                    <tr><td>AI tooling</td><td>Claude Code (Claude Sonnet 4)</td></tr>
+                </tbody>
+            </table>
+
+            <h3>Deployment</h3>
+
+            <p>The site deploys directly from GitHub to Railway via automatic
+            deploys. Every push to <code>main</code> on the
+            <code>scottheydorn/songspot-fm</code> repository triggers a nixpacks
+            build, runs <code>npm run build</code>, and deploys the production
+            Next.js server. Railway provides a persistent volume mounted at
+            <code>/data</code> where the SQLite database lives, surviving
+            redeploys without data loss. The custom domain
+            <code>songspot.fm</code> is configured at the Railway service level
+            with automatic TLS.</p>
+
+            <h3>Security</h3>
+
+            <p>Production security controls include comprehensive HTTP headers
+            (Content-Security-Policy, HSTS, X-Frame-Options), encrypted session
+            cookies, account lockout with brute-force protection, bcrypt password
+            hashing, and CSRF safeguards. The admin panel is fully isolated from
+            the public-facing user authentication domain.</p>
 
             <a href="#project-list" class="back-to-table">&larr; Back to Projects</a>
         </div>
