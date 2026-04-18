@@ -82,6 +82,21 @@
             real-world proof-of-concept for AI-assisted application development
             at production quality.</p>
 
+            <p>That said, Claude Code is a tool, not a substitute for engineering
+            judgement. The human in the loop drove every meaningful decision:
+            choosing SQLite over a managed database for deployment simplicity,
+            separating admin and user auth domains to limit blast radius,
+            splitting the power stage from logic in the MusicKit provider to
+            avoid state leaks, and pushing back when the AI suggested
+            over-engineered abstractions where straightforward code would do.
+            UX choices &mdash; the 30-second preview as the default experience,
+            the progressive disclosure from anonymous visitor to registered
+            user to Apple Music subscriber &mdash; came from understanding how
+            people actually discover music, not from a prompt. AI-assisted
+            development at this level requires a solid technical foundation
+            to direct the conversation, evaluate trade-offs, and recognise
+            when the tool is confidently wrong.</p>
+
             <h3>Architecture</h3>
 
             <p>The application is a server-rendered Next.js 14 App Router project
