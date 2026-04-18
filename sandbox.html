@@ -52,9 +52,9 @@
                     <td><a href="#pragotron-master-clock" class="project-link">View Project</a></td>
                 </tr>
                 <tr>
-                    <td>Weather Widget</td>
-                    <td>Interactive weather forecast display using weather API</td>
-                    <td><a href="#weather-widget" class="project-link">View Project</a></td>
+                    <td>D365 ER Governance Tool</td>
+                    <td>Audit and cleanup of Electronic Reporting configurations in D365 F&amp;O</td>
+                    <td><a href="#er-governance-tool" class="project-link">View Project</a></td>
                 </tr>
             </tbody>
         </table>
@@ -334,14 +334,132 @@ void loop() {
             <a href="#project-list" class="back-to-table">&larr; Back to Projects</a>
         </div>
 
-        <div id="weather-widget" class="project-section">
-            <h2>Weather Widget</h2>
-            <p>The Weather Widget project provides real-time weather information in an interactive display format. Users can check current conditions and forecasts for any location worldwide.</p>
-            <p>This widget will use the OpenWeather API to fetch accurate weather data and present it in a user-friendly interface.</p>
+        <div id="er-governance-tool" class="project-section">
+            <h2>D365 ER Governance Tool</h2>
 
-            <div class="weather-container">
-                <p><i>Interactive weather display will appear here once the project is fully implemented.</i></p>
-            </div>
+            <p>The D365 ER Governance Tool is an audit and cleanup utility for
+            Electronic Reporting (ER) configurations in Microsoft Dynamics 365
+            Finance &amp; Operations. Developed for a large retail client operating
+            across multiple regions, it addresses a persistent governance challenge:
+            D365 environments accumulate hundreds of ER configurations over time
+            &mdash; many country-specific, deprecated, or entirely unused &mdash;
+            with no built-in tooling to identify which can be safely removed.</p>
+
+            <h3>The problem</h3>
+
+            <p>Electronic Reporting is the D365 framework for generating regulatory
+            documents: tax filings, payment formats, invoices, Intrastat
+            declarations, and similar country-specific output. Microsoft ships
+            hundreds of ER configurations through the Global Repository, and
+            environments that have been live for any length of time tend to
+            accumulate a sprawling catalogue of formats, data models, and model
+            mappings. Many target countries the organisation does not operate in.
+            Others are older versions superseded by newer releases. Some have
+            never been executed at all.</p>
+
+            <p>The cost is not just clutter. Excess ER configurations slow down
+            the Globalization Studio sync process, inflate Dataverse storage,
+            and create confusion for functional consultants trying to identify
+            which formats are actually in use. D365 provides no native view
+            that cross-references configurations against execution history,
+            parameter bindings, or legal entity geography &mdash; so cleanup
+            has historically been a manual, error-prone process that most teams
+            simply avoid.</p>
+
+            <h3>Architecture</h3>
+
+            <p>The tool is a Python application with a Streamlit web interface
+            that queries two separate API surfaces and correlates their data
+            to classify every ER configuration in the environment:</p>
+
+            <ol>
+                <li><strong>Dataverse (Globalization Studio)</strong> &mdash;
+                    the tool downloads gzipped ER index files from the
+                    <code>msdyn_electronicreportingconfigurationsindexfiles</code>
+                    table and parses them into a flat catalogue of all configurations,
+                    including name, version, status, provider, country target, and
+                    GUID. It also discovers and scans additional Dataverse tables
+                    (format destinations, solution metadata) for active usage
+                    signals.</li>
+                <li><strong>D365 F&amp;O OData</strong> &mdash; the tool queries
+                    the Finance environment&rsquo;s OData endpoints to collect
+                    execution history (which formats have actually run), parameter
+                    table references (which formats are pinned in GL parameters,
+                    tax setup, payment modes, print management, etc.), and legal
+                    entity country codes to determine which country-specific
+                    configurations are relevant.</li>
+            </ol>
+
+            <p>Authentication supports three methods: Azure CLI tokens (for
+            developer use), interactive browser sign-in via MSAL, and service
+            principal credentials for automated/pipeline scenarios.</p>
+
+            <h3>Classification engine</h3>
+
+            <p>The analyser classifies every configuration into one of four
+            categories:</p>
+
+            <ol>
+                <li><strong>Required</strong> (green) &mdash; recently executed,
+                    referenced in a parameter or setup table, has a custom
+                    (non-Microsoft) provider, or is a dependency of another
+                    required configuration.</li>
+                <li><strong>Country Mismatch</strong> (orange) &mdash; targets a
+                    country code that does not appear in any of the
+                    environment&rsquo;s legal entities. The tool normalises both
+                    ISO 3166 alpha-2 and alpha-3 codes so that e.g. &ldquo;DE&rdquo;
+                    and &ldquo;DEU&rdquo; are treated as equivalent.</li>
+                <li><strong>Deprecated Version</strong> (yellow) &mdash; an older
+                    version of a configuration where a newer version with the same
+                    GUID exists, or marked as Obsolete in the repository. A warning
+                    is surfaced that version-specific pinning in parameter forms
+                    must be verified before deletion.</li>
+                <li><strong>Unused</strong> (red) &mdash; no execution history,
+                    no parameter references, no dependency relationships, and no
+                    country match. Safest candidates for removal.</li>
+            </ol>
+
+            <p>Dependency analysis walks the parent&ndash;child tree so that a
+            data model is never flagged for removal if any of its child model
+            mappings or formats are classified as required.</p>
+
+            <h3>Interface</h3>
+
+            <p>The Streamlit UI is organised into four tabs:</p>
+
+            <ol>
+                <li><strong>Dashboard</strong> &mdash; summary metrics (total,
+                    required, removable, custom) and interactive Plotly charts
+                    showing classification breakdown and top-20 countries by
+                    configuration count.</li>
+                <li><strong>Audit Report</strong> &mdash; filterable, searchable
+                    table of all configurations with classification, reason,
+                    last execution date, and provider. Exportable to CSV for
+                    offline review with functional consultants.</li>
+                <li><strong>Cleanup Actions</strong> &mdash; checkbox-based
+                    selection with quick-select buttons for all country mismatches
+                    or all deprecated versions. Deletion is ordered (formats first,
+                    then mappings, then data models) to respect dependency
+                    constraints, with a confirmation gate before execution.</li>
+                <li><strong>Dependencies</strong> &mdash; interactive tree
+                    visualisation of the ER configuration hierarchy, colour-coded
+                    by classification, so reviewers can trace why a particular
+                    configuration is or is not flagged for removal.</li>
+            </ol>
+
+            <h3>Stack</h3>
+
+            <table class="project-table">
+                <tbody>
+                    <tr><td>Language</td><td>Python</td></tr>
+                    <tr><td>UI</td><td>Streamlit</td></tr>
+                    <tr><td>Charting</td><td>Plotly Express</td></tr>
+                    <tr><td>Auth</td><td>MSAL (Azure CLI, interactive, SPN)</td></tr>
+                    <tr><td>Data sources</td><td>Dataverse Web API + D365 F&amp;O OData</td></tr>
+                    <tr><td>Data processing</td><td>pandas + NumPy</td></tr>
+                    <tr><td>AI tooling</td><td>Claude Code (Claude Sonnet 4)</td></tr>
+                </tbody>
+            </table>
 
             <a href="#project-list" class="back-to-table">&larr; Back to Projects</a>
         </div>
