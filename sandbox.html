@@ -52,6 +52,11 @@
                     <td><a href="https://songspot.fm" class="project-link" target="_blank" rel="noopener">songspot.fm</a></td>
                 </tr>
                 <tr>
+                    <td>Pragotron Master Clock</td>
+                    <td>Arduino-driven master clock for a vintage Czech slave clock</td>
+                    <td><a href="#pragotron-master-clock" class="project-link">View Project</a></td>
+                </tr>
+                <tr>
                     <td>Weather Widget</td>
                     <td>Interactive weather forecast display using weather API</td>
                     <td><a href="#weather-widget" class="project-link">View Project</a></td>
@@ -68,6 +73,164 @@
             <div class="spotify-container">
                 <p><i>Spotify preview stream will appear here once the project is fully implemented.</i></p>
             </div>
+
+            <a href="#project-list" class="back-to-table">&larr; Back to Projects</a>
+        </div>
+
+        <div id="pragotron-master-clock" class="project-section">
+            <h2>Pragotron Master Clock</h2>
+
+            <p>The Pragotron Master Clock is a custom Arduino-based controller that drives
+            a vintage Czechoslovak Pragotron slave clock movement. Built entirely from
+            scratch &mdash; no third-party clock libraries &mdash; it generates the
+            alternating &plusmn;24&nbsp;V pulses required to advance the minute hand,
+            displays the current time on a small TFT, and keeps itself running
+            indefinitely via a hardware watchdog.</p>
+
+            <figure>
+                <img src="images/pragotron-slave-clock.jpg"
+                     alt="Vintage Pragotron slave clock mounted on a wall, showing time just before 11:30."
+                     loading="lazy">
+                <figcaption>The Pragotron slave clock being driven by the master clock controller.</figcaption>
+            </figure>
+
+            <h3>Background</h3>
+
+            <p>Pragotron slave clocks, manufactured in Czechoslovakia from the 1950s
+            through the 1990s, were installed in thousands of schools, factories, and
+            train stations across the Eastern Bloc. The units have no internal
+            timekeeping &mdash; each one expects a central "master clock" to send a
+            24&nbsp;volt pulse once per minute, alternating polarity on every pulse.
+            A positive pulse advances the hand one minute; the next pulse must be
+            negative to advance it again. Without the polarity swap the mechanism
+            simply will not step. The goal of this project was to replace the
+            long-gone original master clock with a small, reliable, modern controller
+            that is accurate to the second and self-recovers from any fault.</p>
+
+            <h3>Architecture</h3>
+
+            <p>The controller is split between two physical units: a wooden enclosure
+            housing the Arduino, the TFT display, and the user controls, and an
+            externally mounted perfboard carrying the power-stage electronics. Keeping
+            the 24&nbsp;V switching hardware away from the low-voltage logic reduces
+            EMI coupling into the microcontroller.</p>
+
+            <p>Functionally the system is organised into four layers:</p>
+
+            <ol>
+                <li><strong>Timekeeping</strong> &mdash; a DS3231 real-time clock module
+                    provides drift-free minute-accurate time, backed up by a CR2032 cell
+                    so the clock survives power cycles without losing sync.</li>
+                <li><strong>Scheduler</strong> &mdash; the main loop polls the RTC and
+                    fires a pulse event at the rollover of each minute. Scheduling is
+                    derived from a single <code>minuteOfEpoch</code> counter so pulse
+                    polarity can always be recomputed deterministically (odd/even =
+                    &plusmn;).</li>
+                <li><strong>Output stage</strong> &mdash; an L298N dual H-bridge motor
+                    driver module switches a regulated 24&nbsp;V rail across the
+                    Pragotron coil. Two Arduino GPIO pins (<code>PIN_A</code>,
+                    <code>PIN_B</code>) select direction; both-low is the idle state.
+                    Upstream of the H-bridge, a DC-DC buck converter provides clean,
+                    adjustable voltage for the coil drive.</li>
+                <li><strong>Supervisor</strong> &mdash; the AVR built-in watchdog timer
+                    is armed with an 8-second timeout and kicked on every successful
+                    loop iteration. If the program stalls, the chip resets itself and
+                    picks up from the RTC, never losing real-world time.</li>
+            </ol>
+
+            <figure>
+                <img src="images/pragotron-circuitry.jpg"
+                     alt="Perfboard-mounted power stage showing a DC-DC buck converter and an L298N H-bridge motor driver module, with the master clock display visible below."
+                     loading="lazy">
+                <figcaption>Power stage on perfboard: buck converter (top) feeding the
+                L298N dual H-bridge (below). The H-bridge outputs run down to the
+                Pragotron coil; the control signals come up from the Arduino inside
+                the master clock enclosure.</figcaption>
+            </figure>
+
+            <h3>Pulse generation</h3>
+
+            <p>The heart of the project is a short routine that emits a single
+            polarity-correct pulse. The H-bridge is driven in one direction for the
+            coil energisation window, then returned to an idle state so the coil is
+            not left powered:</p>
+
+<pre><code>const uint16_t PULSE_MS = 250;   // Coil energisation time
+
+void emitPulse(bool positive) {
+  if (positive) {
+    digitalWrite(PIN_A, HIGH);
+    digitalWrite(PIN_B, LOW);
+  } else {
+    digitalWrite(PIN_A, LOW);
+    digitalWrite(PIN_B, HIGH);
+  }
+  delay(PULSE_MS);
+  digitalWrite(PIN_A, LOW);
+  digitalWrite(PIN_B, LOW);      // return H-bridge to idle
+}</code></pre>
+
+            <p>Pulse polarity is derived from the absolute minute counter, not a
+            toggling boolean &mdash; this way a watchdog reset or power glitch can
+            never leave the controller and the slave clock out of phase:</p>
+
+<pre><code>void tickMinute(uint32_t minuteOfEpoch) {
+  bool positive = (minuteOfEpoch &amp; 1) == 0;
+  emitPulse(positive);
+}</code></pre>
+
+            <h3>Keeping it running: the watchdog</h3>
+
+            <p>Early bench testing revealed the Arduino would occasionally freeze,
+            most likely from EMI generated by the 24&nbsp;V switching coupling back
+            into the logic rail. The fix was two-fold: improved decoupling near the
+            MCU (and physical separation of the power stage onto its own perfboard),
+            plus the AVR watchdog timer configured to force a reboot if the main
+            loop ever stops making progress:</p>
+
+<pre><code>#include &lt;avr/wdt.h&gt;
+
+void setup() {
+  // ... hardware init: RTC, H-bridge pins, TFT ...
+  wdt_enable(WDTO_8S);           // 8-second hardware timeout
+}
+
+void loop() {
+  if (minuteRollover()) {
+    tickMinute(currentMinute());
+  }
+  updateDisplay();
+  wdt_reset();                   // "I am still alive"
+}</code></pre>
+
+            <p>If <code>loop()</code> ever stops executing &mdash; stack overflow,
+            I&sup2;C bus hang, glitched interrupt &mdash; <code>wdt_reset()</code>
+            stops being called, the watchdog fires, and the chip reboots. On reboot,
+            the RTC is re-read and the next pulse polarity is derived from the
+            absolute minute counter, so the slave clock stays in sync with zero
+            manual intervention.</p>
+
+            <h3>Enclosure and display</h3>
+
+            <p>The master clock lives in a small hand-built wooden enclosure labelled
+            with the Pragotron logo. A TFT panel on top shows, at a glance: UTC and
+            local time to the second, the polarity and duration of the last pulse
+            sent, and a rolling UTC seconds counter. Two front-panel controls &mdash;
+            an illuminated indicator button and a momentary push button &mdash;
+            handle manual advance and reset, which is useful after a long power
+            outage when the slave clock hands need to be re-aligned with real
+            time.</p>
+
+            <figure>
+                <img src="images/pragotron-master-unit.jpg"
+                     alt="The finished master clock: a wooden enclosure with the Pragotron logo, a TFT display on top showing UTC and local time, last pulse information, and a UTC seconds counter."
+                     loading="lazy">
+                <figcaption>The finished master clock unit. The display shows UTC and
+                local time, the last pulse polarity and duration
+                (<em>Positive, 250ms</em>), and a live UTC seconds counter useful for
+                confirming the minute rollover fires at exactly the right
+                moment.</figcaption>
+            </figure>
 
             <a href="#project-list" class="back-to-table">&larr; Back to Projects</a>
         </div>
