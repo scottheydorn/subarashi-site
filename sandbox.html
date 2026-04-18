@@ -470,5 +470,44 @@ void loop() {
     </div>
 
     <a href="index.html" class="sandbox-home-link" aria-label="Home"></a>
+
+    <!-- Lightbox -->
+    <div class="lightbox-overlay" id="lightbox">
+        <button class="lightbox-close" aria-label="Close">&times;</button>
+        <img src="" alt="">
+    </div>
+
+    <script>
+    (function() {
+        var overlay = document.getElementById('lightbox');
+        var lbImg = overlay.querySelector('img');
+        var closeBtn = overlay.querySelector('.lightbox-close');
+
+        // Open on image click
+        document.querySelectorAll('.project-section figure img').forEach(function(img) {
+            img.addEventListener('click', function() {
+                lbImg.src = this.src;
+                lbImg.alt = this.alt;
+                overlay.classList.add('active');
+            });
+        });
+
+        function closeLightbox() {
+            overlay.classList.remove('active');
+            lbImg.src = '';
+        }
+
+        closeBtn.addEventListener('click', closeLightbox);
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) closeLightbox();
+        });
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLightbox();
+        });
+        window.addEventListener('scroll', function() {
+            if (overlay.classList.contains('active')) closeLightbox();
+        });
+    })();
+    </script>
 </body>
 </html>
