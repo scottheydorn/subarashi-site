@@ -61,6 +61,11 @@
                     <td>Unified Power Platform + LCS environment browser with drift detection and remediation</td>
                     <td><a href="#d365-env-manager" class="project-link">View Project</a></td>
                 </tr>
+                <tr>
+                    <td>NBHeartBeat</td>
+                    <td>Real-time brand intelligence and sentiment analysis platform</td>
+                    <td><a href="#nbheartbeat" class="project-link">View Project</a></td>
+                </tr>
             </tbody>
         </table>
 
@@ -615,6 +620,201 @@ void loop() {
                     <tr><td>Data sources</td><td>Power Platform BAP API + LCS API + Dataverse Web API</td></tr>
                     <tr><td>Storage</td><td>SQLite (audit log, config cache)</td></tr>
                     <tr><td>Publishing</td><td>Confluence Cloud REST API</td></tr>
+                    <tr><td>AI tooling</td><td>Claude Code (Claude Opus 4)</td></tr>
+                </tbody>
+            </table>
+
+            <a href="#project-list" class="back-to-table">&larr; Back to Projects</a>
+        </div>
+
+        <div id="nbheartbeat" class="project-section">
+            <h2>NBHeartBeat</h2>
+
+            <p>NBHeartBeat is a real-time brand intelligence and sentiment
+            analysis platform built for a major athletic footwear company.
+            It continuously monitors mentions across social media, news
+            outlets, sneaker culture publications, video channels, and
+            review platforms &mdash; aggregating content from over a dozen
+            sources into a single dashboard with live sentiment scoring,
+            engagement-weighted trends, and quality complaint detection.</p>
+
+            <h3>The problem</h3>
+
+            <p>Brand perception in the sneaker industry moves fast. A single
+            viral post about a quality defect, a surprise collaboration
+            announcement, or a trending colourway can shift sentiment
+            overnight. Traditional brand monitoring tools are expensive,
+            slow to configure, and poorly calibrated for sneaker culture
+            &mdash; where words like &ldquo;crazy,&rdquo; &ldquo;sick,&rdquo;
+            &ldquo;insane,&rdquo; and &ldquo;fire&rdquo; are enthusiastic
+            praise, not negative commentary. Off-the-shelf sentiment
+            libraries (AFINN, VADER) consistently misclassify this language,
+            producing misleading trend data that erodes confidence in the
+            analysis.</p>
+
+            <p>The objective was to build a lightweight, self-hosted platform
+            that could be tuned precisely for the brand&rsquo;s domain
+            &mdash; sneaker culture, running communities, streetwear media
+            &mdash; and provide an honest, calibrated signal rather than
+            a noisy one.</p>
+
+            <h3>Architecture</h3>
+
+            <p>The application is a Node.js/Express server with a SQLite
+            database and a single-page dashboard frontend. Scans run on a
+            cron schedule (three times daily) or on demand, with each scan
+            cycling through all configured sources, filtering for brand
+            relevance, scoring sentiment, and storing results for trend
+            analysis.</p>
+
+            <p>The system is organised into four layers:</p>
+
+            <ol>
+                <li><strong>Data collection</strong> &mdash; a multi-source
+                    scanner queries public APIs and RSS feeds across Reddit
+                    (general search plus targeted subreddits), Google News,
+                    sneaker media outlets (SneakerNews, Hypebeast, Nice Kicks,
+                    Highsnobiety), YouTube creator channels, Mastodon and
+                    Lemmy federated instances, and optionally Bluesky,
+                    Trustpilot, and Discord. Each source has its own rate
+                    limiting, pagination strategy, and error isolation so a
+                    single source failure never blocks the rest of the
+                    scan.</li>
+                <li><strong>Relevancy filtering</strong> &mdash; items are
+                    matched against explicit brand mentions and model number
+                    patterns (990, 574, 550, 2002R, 9060, etc.), with
+                    context-aware exclusions for gaming communities, replica
+                    marketplaces, and deal aggregator spam. A blocklist of
+                    50+ subreddit and keyword patterns prevents false
+                    positives from unrelated contexts that happen to share
+                    terminology.</li>
+                <li><strong>Sentiment analysis</strong> &mdash; a custom
+                    engine built on top of the AFINN-165 word list with
+                    domain-specific lexicon overrides, a quality complaint
+                    detector, and engagement-weighted aggregation (described
+                    below).</li>
+                <li><strong>Dashboard</strong> &mdash; a responsive
+                    single-page interface with Chart.js visualisations
+                    showing sentiment trends over time, per-source item
+                    counts, top positive and negative mentions, and live
+                    scan status with a manual trigger button.</li>
+            </ol>
+
+            <h3>Sentiment engine tuning</h3>
+
+            <p>The heart of the platform is a sentiment scoring engine that
+            can be tuned at three levels: lexicon overrides, pattern
+            detectors, and source weighting.</p>
+
+            <h4>Lexicon overrides</h4>
+
+            <p>The base AFINN-165 dictionary assigns scores to ~3,700 common
+            English words, but many of those scores are wrong for sneaker
+            culture. The engine maintains a custom lexicon of ~60 terms that
+            override the AFINN defaults:</p>
+
+            <ul>
+                <li><strong>Hyperbole inversion</strong> &mdash; words like
+                    &ldquo;crazy,&rdquo; &ldquo;insane,&rdquo;
+                    &ldquo;sick,&rdquo; &ldquo;nasty,&rdquo; and
+                    &ldquo;deadly&rdquo; are scored as positive (+1 to +3)
+                    rather than their AFINN negatives (-1 to -3). In sneaker
+                    discussion, &ldquo;these are insane&rdquo; is a
+                    compliment.</li>
+                <li><strong>Product enthusiasm</strong> &mdash; terms like
+                    &ldquo;grail,&rdquo; &ldquo;cop,&rdquo;
+                    &ldquo;fire,&rdquo; &ldquo;heat,&rdquo;
+                    &ldquo;banger,&rdquo; and &ldquo;slaps&rdquo; are
+                    scored +3 to +4 as strong purchase or approval
+                    signals.</li>
+                <li><strong>Deal language</strong> &mdash; &ldquo;steal&rdquo;
+                    and &ldquo;stealing&rdquo; are scored +2 to +3 rather
+                    than their AFINN negatives, since &ldquo;got it for a
+                    steal&rdquo; is positive brand engagement.</li>
+                <li><strong>Violence neutralisation</strong> &mdash; words
+                    like &ldquo;kill,&rdquo; &ldquo;dead,&rdquo; and
+                    &ldquo;murder&rdquo; are set to zero, since they appear
+                    in both positive (&ldquo;killing it&rdquo;) and negative
+                    (&ldquo;dead after two months&rdquo;) contexts and are
+                    best handled by the pattern detector instead.</li>
+                <li><strong>Model number recognition</strong> &mdash;
+                    specific model codes (990, 574, 550, 2002R, 1906R, 327,
+                    9060) receive a small positive boost (+1) as mentions of
+                    specific products generally indicate engaged
+                    discussion.</li>
+            </ul>
+
+            <p>The lexicon is designed to be hot-swappable &mdash; new terms
+            can be added or existing scores adjusted without modifying the
+            core analysis logic, allowing the engine to be recalibrated as
+            language evolves.</p>
+
+            <h4>Quality complaint detection</h4>
+
+            <p>Standard word-list sentiment analysis has a critical blind spot:
+            negation. &ldquo;Not comfortable&rdquo; contains the positive word
+            &ldquo;comfortable&rdquo; and scores positively unless the negation
+            is explicitly detected. The engine includes a pattern-based quality
+            complaint detector that catches four failure modes:</p>
+
+            <ol>
+                <li><strong>Negation patterns</strong> &mdash; &ldquo;not
+                    comfortable,&rdquo; &ldquo;no grip,&rdquo; &ldquo;never
+                    again&rdquo; &rarr; -4 penalty per match.</li>
+                <li><strong>Descriptor-noun pairing</strong> &mdash;
+                    &ldquo;disappointing quality,&rdquo; &ldquo;flimsy
+                    build&rdquo; &rarr; -4 penalty.</li>
+                <li><strong>Degradation verbs</strong> &mdash; &ldquo;quality
+                    declined,&rdquo; &ldquo;sole separated,&rdquo;
+                    &ldquo;stitching came apart&rdquo; &rarr; -4 penalty.</li>
+                <li><strong>Unindexed standalone negatives</strong> &mdash;
+                    negative descriptors near quality-related nouns that
+                    AFINN does not index.</li>
+            </ol>
+
+            <p>A penalty cap of -12 prevents runaway stacking in long
+            complaint posts, ensuring that even a detailed quality rant
+            produces a proportionate negative score rather than an
+            extreme outlier.</p>
+
+            <h4>Source weighting</h4>
+
+            <p>Daily sentiment aggregates use engagement-weighted scoring
+            rather than simple averaging. Each item&rsquo;s contribution to
+            the daily aggregate is weighted by its engagement signal:</p>
+
+            <p><code>weight = max(1, upvotes + (comments &times; 2))</code></p>
+
+            <p>This means a Reddit post with 500 upvotes and 80 comments
+            influences the daily sentiment score far more than a news
+            article with no measurable engagement. The minimum weight of 1
+            ensures every item contributes, but high-engagement content
+            &mdash; which better represents actual community sentiment
+            &mdash; dominates the signal. Sources without native engagement
+            metrics (RSS feeds, news articles) default to a weight of 1,
+            while social platforms with upvote and comment counts naturally
+            receive higher weighting. This approach allows the engine to
+            be tuned by adjusting the engagement multiplier, adding
+            per-source weight coefficients, or introducing source-level
+            credibility scores &mdash; without changing the underlying
+            sentiment scoring logic.</p>
+
+            <p>Title text is analysed with double weight (duplicated in the
+            combined analysis text), reflecting the outsized influence of
+            headlines and post titles on both engagement and reader
+            perception.</p>
+
+            <h3>Stack</h3>
+
+            <table class="project-table">
+                <tbody>
+                    <tr><td>Runtime</td><td>Node.js 18+ (with built-in SQLite)</td></tr>
+                    <tr><td>Server</td><td>Express.js</td></tr>
+                    <tr><td>Database</td><td>SQLite 3 (WAL mode)</td></tr>
+                    <tr><td>Sentiment</td><td>AFINN-165 + custom sneaker-culture lexicon (~60 overrides)</td></tr>
+                    <tr><td>Scheduling</td><td>node-cron (3&times; daily + on-demand)</td></tr>
+                    <tr><td>Sources</td><td>Reddit, Google News, Sneaker Media RSS, YouTube, Mastodon, Lemmy, Bluesky, Trustpilot, Discord</td></tr>
+                    <tr><td>Dashboard</td><td>Chart.js + vanilla JavaScript</td></tr>
                     <tr><td>AI tooling</td><td>Claude Code (Claude Opus 4)</td></tr>
                 </tbody>
             </table>
