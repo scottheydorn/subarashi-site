@@ -56,6 +56,11 @@
                     <td>Audit and cleanup of Electronic Reporting configurations in D365 F&amp;O</td>
                     <td><a href="#er-governance-tool" class="project-link">View Project</a></td>
                 </tr>
+                <tr>
+                    <td>D365 Environment Manager</td>
+                    <td>Unified Power Platform + LCS environment browser with drift detection and remediation</td>
+                    <td><a href="#d365-env-manager" class="project-link">View Project</a></td>
+                </tr>
             </tbody>
         </table>
 
@@ -472,6 +477,145 @@ void loop() {
                     <tr><td>Data sources</td><td>Dataverse Web API + D365 F&amp;O OData</td></tr>
                     <tr><td>Data processing</td><td>pandas + NumPy</td></tr>
                     <tr><td>AI tooling</td><td>Claude Code (Claude Sonnet 4)</td></tr>
+                </tbody>
+            </table>
+
+            <a href="#project-list" class="back-to-table">&larr; Back to Projects</a>
+        </div>
+
+        <div id="d365-env-manager" class="project-section">
+            <h2>D365 Environment Manager</h2>
+
+            <p>The D365 Environment Manager is a lightweight desktop tool that
+            consolidates environment data from Microsoft&rsquo;s Power Platform
+            Admin API and Lifecycle Services (LCS) into a single-page interface.
+            Developed for a large retail client managing dozens of D365 Finance
+            &amp; Operations environments across NA, EMEA, and APAC regions, it
+            provides an at-a-glance snapshot of commonly referenced environment
+            variables &mdash; build versions, platform updates, ER solution
+            versions, deployment history, freeze status, and ownership &mdash;
+            that are otherwise scattered across multiple portals and API
+            surfaces.</p>
+
+            <h3>The problem</h3>
+
+            <p>Managing a portfolio of D365 F&amp;O environments means constantly
+            cross-referencing data from at least three separate sources: the
+            Power Platform Admin Center for environment metadata and state, LCS
+            for build versions and deployment history, and Dataverse for
+            Globalization Studio configuration versions. None of these surfaces
+            present a unified view. Determining whether an environment is running
+            the expected application build, whether its ER solution is current,
+            or who owns a particular sandbox requires navigating multiple portals,
+            waiting for slow page loads, and mentally correlating data across
+            tabs.</p>
+
+            <p>This fragmentation creates a deeper operational risk: configuration
+            drift. When environments are maintained independently &mdash;
+            different teams deploying packages at different cadences, sandbox
+            refreshes overwriting metadata, ad-hoc changes to ER configurations
+            &mdash; it becomes difficult to know whether any given environment
+            is in its expected state. Undetected drift leads to failed
+            deployments, broken integrations, and wasted troubleshooting time
+            when the root cause is simply that an environment is running a
+            different build or configuration than assumed.</p>
+
+            <h3>Architecture</h3>
+
+            <p>The tool is a Python/FastAPI application with a vanilla JavaScript
+            single-page frontend. It authenticates via Azure CLI tokens and
+            queries three API surfaces in a progressive enrichment pattern:</p>
+
+            <ol>
+                <li><strong>Phase 1: Power Platform BAP API</strong> (instant)
+                    &mdash; fetches all Microsoft-hosted D365 F&amp;O
+                    environments with display name, SKU (Production/Sandbox/
+                    Trial), state, region, and Dataverse/Finance URLs.
+                    Environment metadata &mdash; purpose, tier, region, owner,
+                    freeze status &mdash; is stored as structured key-value
+                    pairs in the environment description field and parsed on
+                    retrieval.</li>
+                <li><strong>Phase 2: Dataverse Web API</strong> (~10 seconds)
+                    &mdash; parallel async queries to each environment&rsquo;s
+                    Dataverse instance to retrieve the installed Globalization
+                    (ER) Solution version. Failures are handled gracefully;
+                    environments with unreachable Dataverse endpoints still
+                    appear in the list.</li>
+                <li><strong>Phase 3: LCS API</strong> (minutes) &mdash;
+                    paginated queries with rate-limit handling (6 calls/min) to
+                    retrieve application build version, platform version,
+                    release names, and the last deployment date and package.
+                    Results are cached server-side for 30 minutes to avoid
+                    repeated slow pagination on refresh.</li>
+            </ol>
+
+            <p>This three-phase approach means the UI is usable within seconds
+            of launch &mdash; basic environment data appears immediately, with
+            build and version details progressively filling in as the slower API
+            calls complete.</p>
+
+            <h3>Drift detection and remediation</h3>
+
+            <p>Beyond inventory, the tool is designed as the foundation for
+            active environment governance. By aggregating environment state
+            into a single data model, it enables drift detection: comparing
+            the current state of each environment against an expected baseline
+            and surfacing discrepancies. Planned capabilities include:</p>
+
+            <ol>
+                <li><strong>Configuration drift alerts</strong> &mdash;
+                    flagging environments where the application build, platform
+                    version, or ER solution version deviates from the expected
+                    value for its tier and region.</li>
+                <li><strong>API write-back</strong> &mdash; using the Power
+                    Platform BAP PATCH endpoint to update environment metadata
+                    (owner, purpose, freeze status) directly from the tool,
+                    with full audit logging of every change.</li>
+                <li><strong>Triggered remediation</strong> &mdash; invoking
+                    build and deployment pipelines via Azure DevOps API when
+                    unplanned drift is detected, ensuring environments are
+                    brought back to a known state without manual
+                    intervention.</li>
+                <li><strong>Scheduled monitoring</strong> &mdash; periodic
+                    automated scans that compare environment snapshots over
+                    time, generating drift reports and alerting environment
+                    owners when their environments fall out of compliance.</li>
+            </ol>
+
+            <p>The objective is a closed-loop system: detect drift, notify the
+            right people, and where safe to do so, trigger the appropriate
+            corrective action automatically &mdash; keeping the full portfolio
+            of D365 environments in a known, validated state.</p>
+
+            <h3>Interface</h3>
+
+            <p>The UI is a dark-themed single-page application built with
+            vanilla JavaScript. Environments are displayed in a sortable table
+            with columns for name, SKU, state, purpose, tier, region, owner,
+            ER solution version, application build, platform version, and
+            freeze status. Clicking a row expands an inline editing panel
+            with visual diff highlighting &mdash; changed fields are marked
+            with yellow borders before save. Concurrent multi-environment
+            updates, toast notifications, and a full audit trail panel
+            round out the interface.</p>
+
+            <p>Additional features include field inference (automatically
+            suggesting purpose, tier, and region from environment naming
+            conventions), JSON export for offline analysis, and one-click
+            Confluence publishing to generate a timestamped environment
+            inventory page for stakeholder review.</p>
+
+            <h3>Stack</h3>
+
+            <table class="project-table">
+                <tbody>
+                    <tr><td>Backend</td><td>Python / FastAPI + Uvicorn</td></tr>
+                    <tr><td>Frontend</td><td>Vanilla JavaScript (single HTML file)</td></tr>
+                    <tr><td>Auth</td><td>Azure CLI token acquisition (MSAL fallback)</td></tr>
+                    <tr><td>Data sources</td><td>Power Platform BAP API + LCS API + Dataverse Web API</td></tr>
+                    <tr><td>Storage</td><td>SQLite (audit log, config cache)</td></tr>
+                    <tr><td>Publishing</td><td>Confluence Cloud REST API</td></tr>
+                    <tr><td>AI tooling</td><td>Claude Code (Claude Opus 4)</td></tr>
                 </tbody>
             </table>
 
