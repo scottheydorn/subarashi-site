@@ -743,12 +743,103 @@ button[type="submit"]:disabled {
 .sandbox-hero {
     text-align: center;
     padding: 80px 0 48px;
+    position: relative;
+}
+
+.sand-cloud {
+    position: absolute;
+    top: 68px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 320px;
+    height: 120px;
+    pointer-events: none;
+}
+
+.sand-particles {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow:
+        -80px -15px 3px rgba(194, 164, 108, 0.25),
+        -55px -22px 2px rgba(210, 180, 120, 0.20),
+        -35px 8px 4px rgba(194, 164, 108, 0.15),
+        -20px -28px 3px rgba(220, 190, 130, 0.18),
+        -10px 15px 2px rgba(194, 164, 108, 0.22),
+        5px -20px 3px rgba(210, 180, 120, 0.16),
+        25px 10px 4px rgba(194, 164, 108, 0.20),
+        40px -18px 2px rgba(220, 190, 130, 0.14),
+        55px 5px 3px rgba(194, 164, 108, 0.22),
+        70px -25px 3px rgba(210, 180, 120, 0.18),
+        85px 12px 2px rgba(194, 164, 108, 0.15),
+        -65px 20px 3px rgba(220, 190, 130, 0.12),
+        -45px -8px 2px rgba(194, 164, 108, 0.20),
+        -100px 5px 4px rgba(210, 180, 120, 0.10),
+        95px -8px 3px rgba(194, 164, 108, 0.12),
+        -15px -35px 2px rgba(220, 190, 130, 0.10),
+        30px -32px 3px rgba(194, 164, 108, 0.12),
+        -75px 28px 4px rgba(210, 180, 120, 0.08),
+        60px 22px 3px rgba(194, 164, 108, 0.10),
+        110px 0px 4px rgba(210, 180, 120, 0.08),
+        -110px -10px 3px rgba(194, 164, 108, 0.08),
+        15px 25px 2px rgba(220, 190, 130, 0.12),
+        -30px 30px 3px rgba(194, 164, 108, 0.08),
+        50px -35px 2px rgba(210, 180, 120, 0.10);
 }
 
 .sandbox-hero h1 {
-    font-size: 36px;
-    font-weight: 400;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: #1B9D6B;
     margin: 0 0 20px;
+    position: relative;
+    display: inline-block;
+}
+
+.sandbox-hero h1::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 280px;
+    height: 110px;
+    background: radial-gradient(ellipse at center,
+        rgba(194, 164, 108, 0.18) 0%,
+        rgba(194, 164, 108, 0.10) 30%,
+        rgba(194, 164, 108, 0.04) 55%,
+        transparent 75%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.sandbox-hero h1 span {
+    position: relative;
+    z-index: 1;
+}
+
+.sandbox-hero h1::after {
+    content: '';
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px;
+    height: 70px;
+    background: radial-gradient(ellipse at center,
+        rgba(210, 180, 120, 0.12) 0%,
+        rgba(210, 180, 120, 0.06) 40%,
+        transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+    filter: blur(2px);
 }
 
 .sandbox-hero p {
