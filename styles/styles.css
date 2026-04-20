@@ -437,6 +437,22 @@ img {
     margin-bottom: 0;
 }
 
+.linkedin-link {
+    display: inline-block;
+    margin-top: 12px;
+    color: #8b949e;
+    transition: color 0.2s;
+}
+
+.linkedin-link:hover {
+    color: #1B9D6B;
+}
+
+.linkedin-link svg {
+    width: 24px;
+    height: 24px;
+}
+
 .values-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
