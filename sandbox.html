@@ -69,6 +69,11 @@
                     <td>Real-time brand intelligence and sentiment analysis platform</td>
                     <td><a href="#nbheartbeat" class="project-link">View Project</a></td>
                 </tr>
+                <tr>
+                    <td>Cloud Cost Optimization</td>
+                    <td>Azure FinOps platform &mdash; cost visibility, policy compliance, and optimization recommendations</td>
+                    <td><a href="#cloud-cost-optimization" class="project-link">View Project</a></td>
+                </tr>
             </tbody>
         </table>
 
@@ -822,6 +827,212 @@ void loop() {
                     <tr><td>Scheduling</td><td>node-cron (3&times; daily + on-demand)</td></tr>
                     <tr><td>Sources</td><td>Reddit, Google News, Sneaker Media RSS, YouTube, Mastodon, Lemmy, Bluesky, Trustpilot, Discord</td></tr>
                     <tr><td>Dashboard</td><td>Chart.js + vanilla JavaScript</td></tr>
+                    <tr><td>AI tooling</td><td>Claude Code (Claude Opus 4)</td></tr>
+                </tbody>
+            </table>
+
+            <a href="#project-list" class="back-to-table">&larr; Back to Projects</a>
+        </div>
+
+        <div id="cloud-cost-optimization" class="project-section">
+            <h2>Cloud Cost Optimization</h2>
+
+            <p>Cloud Cost Optimization is an enterprise FinOps platform that
+            aggregates cost data, resource inventory, utilization metrics, and
+            optimization recommendations from across an organization&rsquo;s
+            Azure subscriptions into a single operational dashboard. Built for
+            a large retail company managing hundreds of Azure resources across
+            multiple regions, it combines automated data ingestion from
+            Microsoft&rsquo;s native Azure APIs with a Cloud Custodian policy
+            engine to continuously identify waste, enforce tagging governance,
+            and generate actionable reports that translate cloud infrastructure
+            data into clear business decisions.</p>
+
+            <h3>The problem</h3>
+
+            <p>Azure provides powerful cost management and optimization tools
+            &mdash; Cost Management, Advisor, Resource Graph, Monitor &mdash;
+            but they exist as separate portals, each with its own query
+            language, export format, and access model. For an enterprise
+            running dozens of subscriptions with thousands of resources,
+            answering basic questions (&ldquo;What are we spending by cost
+            center?&rdquo; &ldquo;Which VMs are idle?&rdquo; &ldquo;Are all
+            resources tagged correctly?&rdquo;) requires navigating multiple
+            surfaces and manually correlating data that was never designed to
+            be viewed together.</p>
+
+            <p>The deeper challenge is accountability. Without normalized
+            tagging and automated cost allocation, there is no reliable way
+            to charge infrastructure costs back to the business units that
+            incur them. Untagged resources become invisible spend. Idle VMs
+            and orphaned disks accumulate because no one has a consolidated
+            view of what is running, what it costs, and whether it is still
+            needed. Azure Advisor identifies savings opportunities, but its
+            recommendations are scattered across subscriptions and lack the
+            resource-level detail needed to act on them confidently.</p>
+
+            <h3>Enterprise value</h3>
+
+            <p>The platform is designed to deliver measurable business
+            outcomes, not just technical visibility:</p>
+
+            <ol>
+                <li><strong>Cost allocation and chargeback</strong> &mdash;
+                    every dollar of Azure spend is attributed to a cost
+                    center, project, environment, owner, or application
+                    through normalized tagging. This enables accurate
+                    monthly chargeback reports that finance teams can use
+                    directly, eliminating the manual spreadsheet reconciliation
+                    that typically consumes days each billing cycle.</li>
+                <li><strong>Waste elimination</strong> &mdash; policy-driven
+                    detection of idle VMs, unattached disks, orphaned
+                    public IPs, oversized instances, and expired snapshots
+                    surfaces concrete savings opportunities with dollar
+                    amounts attached. Each finding links to the specific
+                    resources involved, their current monthly cost, and
+                    the estimated savings from remediation.</li>
+                <li><strong>Reservation and savings plan guidance</strong>
+                    &mdash; Azure Advisor recommendations are ingested,
+                    grouped by category, and enriched with affected resource
+                    lists so that procurement teams can evaluate reserved
+                    instance and compute savings plan purchases with full
+                    context: which resources benefit, what the commitment
+                    costs, and what the projected annual savings are.</li>
+                <li><strong>Tagging governance</strong> &mdash; tag
+                    compliance is measured per subscription and surfaced
+                    as a percentage score. Resources missing required tags
+                    are identified for remediation, and the platform
+                    provides bulk tagging operations to close coverage
+                    gaps at scale rather than one resource at a time.</li>
+                <li><strong>Executive reporting</strong> &mdash; pre-built
+                    reports (executive summary, subscription overview,
+                    cost center chargeback, tag compliance, waste summary)
+                    give leadership a clear picture of cloud spend health
+                    without requiring Azure portal access or technical
+                    expertise.</li>
+            </ol>
+
+            <h3>Architecture</h3>
+
+            <p>The platform is a Python/FastAPI application with a
+            server-rendered UI, a PostgreSQL data store, and a CLI for
+            both interactive use and scheduled pipeline execution. Data
+            flows through four ingestion pipelines that run independently
+            and can be triggered on demand or via scheduled jobs:</p>
+
+            <ol>
+                <li><strong>Cost ingestion</strong> &mdash; pulls daily
+                    cost records from the Azure Cost Management REST API,
+                    broken down by resource, meter category, and billing
+                    period. Supports three ingestion modes (API, blob
+                    storage exports, local files) for flexibility across
+                    environments. Idempotent upserts ensure re-runs
+                    never duplicate data.</li>
+                <li><strong>Resource inventory</strong> &mdash; queries
+                    Azure Resource Graph across all subscriptions to
+                    snapshot every resource with its type, location,
+                    SKU, provisioning state, and tags. A tag normalizer
+                    applies regex-based rules to standardize inconsistent
+                    tag keys across teams and regions (e.g.
+                    &ldquo;Cost Center,&rdquo; &ldquo;cost-center,&rdquo;
+                    &ldquo;COSTCENTER&rdquo; all resolve to
+                    <code>cost_center</code>).</li>
+                <li><strong>Utilization metrics</strong> &mdash; collects
+                    CPU, memory, disk I/O, and network metrics from Azure
+                    Monitor for VMs, App Service plans, SQL databases, and
+                    AKS clusters. These time-series data points feed the
+                    Cloud Custodian policy engine to distinguish genuinely
+                    idle resources from those with intermittent
+                    workloads.</li>
+                <li><strong>Advisor recommendations</strong> &mdash;
+                    ingests cost optimization recommendations from Azure
+                    Advisor, deduplicates by lookback period, and extracts
+                    savings estimates, SKU details, and commitment terms
+                    for reservation and savings plan analysis.</li>
+            </ol>
+
+            <p>All four pipelines write to a shared PostgreSQL database
+            with a materialized view that joins costs to normalized tags,
+            enabling instant cost allocation queries across five
+            dimensions without expensive runtime joins.</p>
+
+            <h3>Policy engine</h3>
+
+            <p>The platform extends Cloud Custodian &mdash; the open-source
+            cloud governance framework &mdash; with a custom plugin that
+            adds cost-aware and utilization-aware filters not available in
+            the base project. This is the key differentiator: standard
+            Cloud Custodian can find idle VMs, but it cannot distinguish
+            a $5/month idle dev box from a $2,000/month idle production
+            instance. The custom filters cross-reference live Azure
+            Monitor metrics and actual Cost Management spend data against
+            each resource, enabling policies like &ldquo;flag VMs with
+            average CPU below 5% over 14 days that cost more than
+            $500/month&rdquo; &mdash; targeting high-value waste rather
+            than generating noise.</p>
+
+            <p>Nineteen starter policies ship with the platform, covering
+            idle and oversized VMs, unattached disks, orphaned network
+            resources, unused storage accounts, empty App Service plans,
+            expired snapshots, and security findings (open firewalls,
+            public storage access, expiring Key Vault keys). Each policy
+            runs in read-only mode &mdash; no automatic modifications
+            &mdash; and records findings with severity, affected resource,
+            current cost, and estimated savings percentage. Findings are
+            surfaced in the UI for human review before any action is
+            taken.</p>
+
+            <h3>Interface</h3>
+
+            <p>The UI is a server-rendered web application using HTMX for
+            lightweight interactivity without a JavaScript build step.
+            Pages are organized around the FinOps workflow:</p>
+
+            <ol>
+                <li><strong>Dashboard</strong> &mdash; 30-day spend
+                    summary with month-over-month comparison, top cost
+                    centers, total potential savings from pending findings,
+                    tag coverage percentage, and resource inventory
+                    count.</li>
+                <li><strong>Cost allocation</strong> &mdash; interactive
+                    cost grouping by any of five tag-based dimensions
+                    (cost center, project, environment, owner,
+                    application), with an unallocated spend view that
+                    highlights resources missing required tags.</li>
+                <li><strong>Policies</strong> &mdash; browse findings
+                    with filtering and sorting, discover and run
+                    available policies, create custom policies via a
+                    YAML generator, and apply bulk tagging operations
+                    to untagged resources.</li>
+                <li><strong>Advisor action plan</strong> &mdash;
+                    Azure Advisor recommendations grouped by category
+                    and ranked by savings impact, with expandable
+                    implementation steps and affected resource lists
+                    for each recommendation group.</li>
+                <li><strong>Reports</strong> &mdash; executive summary,
+                    subscription overview, cost center chargeback, tag
+                    compliance, and waste summary &mdash; each designed
+                    to be shared directly with stakeholders.</li>
+                <li><strong>D365 environment analysis</strong> &mdash;
+                    specialized views for Dynamics 365 F&amp;O
+                    infrastructure, grouping resources by detected
+                    environment with cost attribution and resource type
+                    breakdowns.</li>
+            </ol>
+
+            <h3>Stack</h3>
+
+            <table class="project-table">
+                <tbody>
+                    <tr><td>Backend</td><td>Python / FastAPI + Uvicorn (fully async)</td></tr>
+                    <tr><td>Frontend</td><td>Jinja2 server-rendered templates + HTMX</td></tr>
+                    <tr><td>Database</td><td>PostgreSQL 16 (SQLAlchemy 2.0 async + Alembic)</td></tr>
+                    <tr><td>Policy engine</td><td>Cloud Custodian + custom c7n-finops plugin</td></tr>
+                    <tr><td>Azure APIs</td><td>Cost Management, Resource Graph, Monitor, Advisor</td></tr>
+                    <tr><td>Data processing</td><td>pandas + PyArrow (Parquet/CSV)</td></tr>
+                    <tr><td>Auth</td><td>Azure Identity (Service Principal + Azure CLI)</td></tr>
+                    <tr><td>Notifications</td><td>Microsoft Graph API (email) + Teams webhooks</td></tr>
+                    <tr><td>Infrastructure</td><td>Azure Container Apps + PostgreSQL Flexible Server (Bicep IaC)</td></tr>
                     <tr><td>AI tooling</td><td>Claude Code (Claude Opus 4)</td></tr>
                 </tbody>
             </table>
