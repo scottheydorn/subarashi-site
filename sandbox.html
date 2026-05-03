@@ -71,7 +71,7 @@
                 </tr>
                 <tr>
                     <td>Cloud Cost Optimization</td>
-                    <td>Azure FinOps platform &mdash; cost visibility, policy compliance, and optimization recommendations</td>
+                    <td>Custom Azure cost optimization UI &mdash; aggregates thousands of resources with actionable savings data</td>
                     <td><a href="#cloud-cost-optimization" class="project-link">View Project</a></td>
                 </tr>
             </tbody>
@@ -837,16 +837,16 @@ void loop() {
         <div id="cloud-cost-optimization" class="project-section">
             <h2>Cloud Cost Optimization</h2>
 
-            <p>Cloud Cost Optimization is an enterprise FinOps platform that
+            <p>Cloud Cost Optimization is a custom web application that
             aggregates cost data, resource inventory, utilization metrics, and
-            optimization recommendations from across an organization&rsquo;s
-            Azure subscriptions into a single operational dashboard. Built for
-            a large retail company managing hundreds of Azure resources across
-            multiple regions, it combines automated data ingestion from
-            Microsoft&rsquo;s native Azure APIs with a Cloud Custodian policy
-            engine to continuously identify waste, enforce tagging governance,
-            and generate actionable reports that translate cloud infrastructure
-            data into clear business decisions.</p>
+            optimization recommendations for thousands of Azure resources
+            across an organization&rsquo;s subscriptions into a single
+            operational dashboard. Built for a large retail company managing
+            cloud infrastructure across multiple regions, it pulls data from
+            Microsoft&rsquo;s native Azure APIs, runs it through a Cloud
+            Custodian policy engine to identify waste and enforce tagging
+            governance, and surfaces actionable savings data that translates
+            raw cloud telemetry into clear business decisions.</p>
 
             <h3>The problem</h3>
 
@@ -873,7 +873,7 @@ void loop() {
 
             <h3>Enterprise value</h3>
 
-            <p>The platform is designed to deliver measurable business
+            <p>The application is designed to deliver measurable business
             outcomes, not just technical visibility:</p>
 
             <ol>
@@ -901,7 +901,7 @@ void loop() {
                 <li><strong>Tagging governance</strong> &mdash; tag
                     compliance is measured per subscription and surfaced
                     as a percentage score. Resources missing required tags
-                    are identified for remediation, and the platform
+                    are identified for remediation, and the application
                     provides bulk tagging operations to close coverage
                     gaps at scale rather than one resource at a time.</li>
                 <li><strong>Executive reporting</strong> &mdash; pre-built
@@ -914,7 +914,7 @@ void loop() {
 
             <h3>Architecture</h3>
 
-            <p>The platform is a Python/FastAPI application with a
+            <p>The application is built on Python/FastAPI with a
             server-rendered UI, a PostgreSQL data store, and a CLI for
             both interactive use and scheduled pipeline execution. Data
             flows through four ingestion pipelines that run independently
@@ -958,8 +958,9 @@ void loop() {
 
             <h3>Policy engine</h3>
 
-            <p>The platform extends Cloud Custodian &mdash; the open-source
-            cloud governance framework &mdash; with a custom plugin that
+            <p>The application extends Cloud Custodian &mdash; the
+            open-source cloud governance framework &mdash; with a custom
+            plugin that
             adds cost-aware and utilization-aware filters not available in
             the base project. This is the key differentiator: standard
             Cloud Custodian can find idle VMs, but it cannot distinguish
@@ -971,7 +972,7 @@ void loop() {
             $500/month&rdquo; &mdash; targeting high-value waste rather
             than generating noise.</p>
 
-            <p>Nineteen starter policies ship with the platform, covering
+            <p>Nineteen starter policies ship with the application, covering
             idle and oversized VMs, unattached disks, orphaned network
             resources, unused storage accounts, empty App Service plans,
             expired snapshots, and security findings (open firewalls,
@@ -986,7 +987,7 @@ void loop() {
 
             <p>The UI is a server-rendered web application using HTMX for
             lightweight interactivity without a JavaScript build step.
-            Pages are organized around the FinOps workflow:</p>
+            Pages are organized around the cost optimization workflow:</p>
 
             <ol>
                 <li><strong>Dashboard</strong> &mdash; 30-day spend
@@ -1027,7 +1028,7 @@ void loop() {
                     <tr><td>Backend</td><td>Python / FastAPI + Uvicorn (fully async)</td></tr>
                     <tr><td>Frontend</td><td>Jinja2 server-rendered templates + HTMX</td></tr>
                     <tr><td>Database</td><td>PostgreSQL 16 (SQLAlchemy 2.0 async + Alembic)</td></tr>
-                    <tr><td>Policy engine</td><td>Cloud Custodian + custom c7n-finops plugin</td></tr>
+                    <tr><td>Policy engine</td><td>Cloud Custodian + custom plugin (cost-aware filters)</td></tr>
                     <tr><td>Azure APIs</td><td>Cost Management, Resource Graph, Monitor, Advisor</td></tr>
                     <tr><td>Data processing</td><td>pandas + PyArrow (Parquet/CSV)</td></tr>
                     <tr><td>Auth</td><td>Azure Identity (Service Principal + Azure CLI)</td></tr>
