@@ -1000,6 +1000,7 @@ button[type="submit"]:disabled {
 .nav-product-link {
     display: inline-flex;
     align-items: center;
+    text-transform: none !important;
 }
 
 .product-hero {
