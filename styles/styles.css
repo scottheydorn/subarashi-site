@@ -996,6 +996,218 @@ button[type="submit"]:disabled {
     opacity: 0.8;
 }
 
+/* ===== Product Page (KentōXPP) ===== */
+.nav-product-link {
+    display: inline-flex;
+    align-items: center;
+}
+
+.product-hero {
+    padding: 80px 0 60px;
+    text-align: center;
+}
+
+.product-hero-logo {
+    margin-bottom: 20px;
+}
+
+.product-hero h1 {
+    font-family: 'Satoshi', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    margin: 0 0 24px;
+    color: #e6edf3;
+    letter-spacing: 2px;
+}
+
+.product-accent {
+    font-weight: 400;
+}
+
+.product-hero p {
+    font-size: 17px;
+    color: #8b949e;
+    max-width: 680px;
+    margin: 0 auto 40px;
+    line-height: 1.8;
+}
+
+.btn-product {
+    background-color: #C75B1E;
+    color: #fff;
+}
+
+.btn-product:hover {
+    background-color: #d96a2d;
+    color: #fff;
+}
+
+/* Flow steps */
+.product-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.flow-step {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    background-color: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 8px;
+    padding: 32px;
+    transition: border-color 0.2s;
+}
+
+.flow-step:hover {
+    border-color: #30363d;
+}
+
+.flow-step-number {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #C75B1E;
+    color: #fff;
+    font-family: 'Satoshi', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2px;
+}
+
+.flow-step-content h3 {
+    font-size: 18px;
+    font-weight: 400;
+    margin: 0 0 12px;
+    color: #e6edf3;
+}
+
+.flow-step-content p {
+    color: #8b949e;
+    font-size: 15px;
+    margin: 0;
+    line-height: 1.8;
+}
+
+.flow-step-content code {
+    font-family: "Andale Mono", "Courier New", monospace;
+    font-size: 13px;
+    background-color: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 4px;
+    padding: 2px 6px;
+    color: #C75B1E;
+}
+
+/* Pricing */
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    align-items: start;
+}
+
+.pricing-card {
+    background-color: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 8px;
+    padding: 36px;
+    text-align: center;
+    position: relative;
+    transition: border-color 0.2s;
+}
+
+.pricing-card:hover {
+    border-color: #30363d;
+}
+
+.pricing-card-featured {
+    border-color: #C75B1E;
+}
+
+.pricing-card-featured:hover {
+    border-color: #d96a2d;
+}
+
+.pricing-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #C75B1E;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 16px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.pricing-tier {
+    font-family: 'Satoshi', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #e6edf3;
+    margin-bottom: 12px;
+}
+
+.pricing-price {
+    font-family: 'Satoshi', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: #e6edf3;
+    margin-bottom: 4px;
+}
+
+.pricing-unit {
+    font-size: 18px;
+    font-weight: 400;
+    color: #8b949e;
+}
+
+.pricing-period {
+    font-size: 13px;
+    color: #8b949e;
+    margin-bottom: 28px;
+}
+
+.pricing-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 28px;
+    text-align: left;
+}
+
+.pricing-features li {
+    font-size: 14px;
+    color: #8b949e;
+    padding: 8px 0;
+    border-bottom: 1px solid #21262d;
+}
+
+.pricing-features li:last-child {
+    border-bottom: none;
+}
+
+.pricing-features li::before {
+    content: "\2713";
+    color: #C75B1E;
+    margin-right: 10px;
+    font-weight: 700;
+}
+
+.pricing-btn {
+    width: 100%;
+    text-align: center;
+}
+
 /* ===== Typography ===== */
 h1, h2, h3, h4 {
     font-weight: 400;
@@ -1093,6 +1305,21 @@ p {
 
     .case-study {
         padding: 24px;
+    }
+
+    .product-hero h1 {
+        font-size: 32px;
+    }
+
+    .pricing-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    .flow-step {
+        flex-direction: column;
+        gap: 16px;
     }
 }
 

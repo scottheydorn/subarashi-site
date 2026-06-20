@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script data-goatcounter="https://subarashillc.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kent&#333;XPP - Static Analysis for D365 F&amp;O X++ Code</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+</head>
+<body>
+    <nav class="site-nav">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">subarash&#299;</a>
+            <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle navigation">&#9776;</button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="case-studies.html">Case Studies</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="kentoxpp.html" class="active nav-product-link"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 512 512" style="vertical-align: -1px; margin-right: 4px;"><rect width="512" height="512" rx="66.56" fill="#C75B1E"/><rect x="225.280" y="81.920" width="51.200" height="358.400" rx="10.240" fill="#FFFFFF"/><rect x="107.520" y="128.000" width="296.960" height="46.080" rx="10.240" fill="#FFFFFF"/><rect x="128.000" y="296.960" width="138.240" height="40.960" rx="10.240" fill="#FFFFFF" transform="rotate(32 194.560 317.440)"/><rect x="245.760" y="296.960" width="138.240" height="40.960" rx="10.240" fill="#FFFFFF" transform="rotate(-32 317.440 317.440)"/></svg>Kent&#333;XPP</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="legal.html">Legal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <!-- Product Hero -->
+        <section class="product-hero">
+            <div class="product-hero-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 512 512">
+                    <rect width="512" height="512" rx="66.56" fill="#C75B1E"/>
+                    <rect x="225.280" y="81.920" width="51.200" height="358.400" rx="10.240" fill="#FFFFFF"/>
+                    <rect x="107.520" y="128.000" width="296.960" height="46.080" rx="10.240" fill="#FFFFFF"/>
+                    <rect x="128.000" y="296.960" width="138.240" height="40.960" rx="10.240" fill="#FFFFFF" transform="rotate(32 194.560 317.440)"/>
+                    <rect x="245.760" y="296.960" width="138.240" height="40.960" rx="10.240" fill="#FFFFFF" transform="rotate(-32 317.440 317.440)"/>
+                </svg>
+            </div>
+            <h1>Kent<span class="product-accent">&#333;</span>XPP</h1>
+            <p>Static analysis for Microsoft Dynamics 365 Finance &amp; Operations X++ source code. Identify performance bottlenecks, security vulnerabilities, transaction integrity issues, and code quality problems before they reach production.</p>
+            <div class="hero-cta">
+                <a href="#pricing" class="btn btn-product">Get Started</a>
+                <a href="#how-it-works" class="btn btn-outline">How It Works</a>
+            </div>
+        </section>
+
+        <!-- Overview -->
+        <section class="section section-divider">
+            <div class="section-header">
+                <span class="section-label">Overview</span>
+                <h2>Purpose-built for D365 F&amp;O</h2>
+                <p>Kent&#333;XPP understands X++ &mdash; its DML patterns, its CoC extension model, its metadata structure, and its unique performance characteristics.</p>
+            </div>
+
+            <div class="highlights">
+                <div class="highlight-card">
+                    <span class="highlight-icon" style="color: #C75B1E;">78+</span>
+                    <h3>Analysis Rules</h3>
+                    <p>Rules across six categories targeting the patterns and anti-patterns specific to D365 F&amp;O development.</p>
+                </div>
+                <div class="highlight-card">
+                    <span class="highlight-icon" style="color: #C75B1E;">A&ndash;F</span>
+                    <h3>Code Grading</h3>
+                    <p>Every file receives a weighted grade based on finding severity, giving teams a clear picture of code health.</p>
+                </div>
+                <div class="highlight-card">
+                    <span class="highlight-icon" style="color: #C75B1E;">&lt;1%</span>
+                    <h3>False Positive Rate</h3>
+                    <p>Two-pass deep validation uses a full recursive descent parser to verify regex findings, suppressing false positives automatically.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Rule Categories -->
+        <section class="section section-divider">
+            <div class="section-header">
+                <span class="section-label">What It Catches</span>
+                <h2>Six categories of analysis</h2>
+            </div>
+
+            <div class="card-grid card-grid-3">
+                <div class="card">
+                    <h3>Performance</h3>
+                    <p>Select-in-loop, insert-in-loop, missing index hints, unbounded queries, and other patterns that degrade runtime performance in production workloads.</p>
+                </div>
+                <div class="card">
+                    <h3>Security</h3>
+                    <p>SQL injection via dynamic query construction, hardcoded credentials, missing authorization checks, and insecure data handling patterns.</p>
+                </div>
+                <div class="card">
+                    <h3>Transactions</h3>
+                    <p>DML statements outside transaction scope, missing ttsBegin/ttsCommit pairs, and transaction boundary violations that risk data integrity.</p>
+                </div>
+                <div class="card">
+                    <h3>Code Quality</h3>
+                    <p>Excessive nesting, overly long methods, empty catch blocks, missing CoC next calls, dead code, and structural complexity metrics.</p>
+                </div>
+                <div class="card">
+                    <h3>Naming</h3>
+                    <p>Non-standard class prefixes, method naming violations, variable casing, and naming patterns that conflict with your organization's model conventions.</p>
+                </div>
+                <div class="card">
+                    <h3>Metadata</h3>
+                    <p>Table field configurations, missing delete actions, form data source issues, security privilege definitions, and EDT/enum structural problems.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works -->
+        <section id="how-it-works" class="section section-divider">
+            <div class="section-header">
+                <span class="section-label">How It Works</span>
+                <h2>Two-pass analysis architecture</h2>
+                <p>Kent&#333;XPP combines fast regex-based scanning with deep structural parsing for accuracy without compromise.</p>
+            </div>
+
+            <div class="product-flow">
+                <div class="flow-step">
+                    <div class="flow-step-number">1</div>
+                    <div class="flow-step-content">
+                        <h3>Source Ingestion</h3>
+                        <p>Connect to your Azure DevOps (TFVC or Git) or GitHub repository. Kent&#333;XPP fetches X++ source files and XML metadata &mdash; table definitions, form layouts, security configurations, EDTs, and enums. ISV and third-party packages are automatically identified and excluded using configurable patterns, ensuring analysis focuses on your code.</p>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-step-number">2</div>
+                    <div class="flow-step-content">
+                        <h3>Pass 1 &mdash; Pattern Scan</h3>
+                        <p>Source files are preprocessed &mdash; comments stripped, strings masked, class and method boundaries identified. Each file is then run against enabled rules using regex-based pattern matching. XML metadata files (tables, forms, security) are parsed and analyzed against metadata-specific rules. Findings are assigned severity and confidence levels, with file-type-aware severity adjustment based on impact tier classification.</p>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-step-number">3</div>
+                    <div class="flow-step-content">
+                        <h3>Pass 2 &mdash; Deep Validation</h3>
+                        <p>Files with critical or high-severity findings are re-parsed using a full recursive descent X++ parser that extracts variables with scope tracking, method calls with receivers, and table field accesses with transactional context. Each finding is validated against this structural data &mdash; a <code>selectAll()</code> method call is distinguished from a <code>select</code> DML statement, a <code>List.insert()</code> from a table buffer <code>.insert()</code>, a UI control named "password" from a hardcoded credential. False positives are automatically suppressed with explanations.</p>
+                    </div>
+                </div>
+
+                <div class="flow-step">
+                    <div class="flow-step-number">4</div>
+                    <div class="flow-step-content">
+                        <h3>Results &amp; Reporting</h3>
+                        <p>Findings are surfaced in a web dashboard with per-file grades, severity breakdowns, trend tracking across scans, and exportable reports. Branch delta comparison shows what changed between branches. Dead code analysis identifies unreferenced classes and methods. Business impact assessment prioritizes the findings that matter most to your operations.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MCP / Dynamic -->
+        <section class="section section-divider">
+            <div class="section-header">
+                <span class="section-label">Dynamic Analysis</span>
+                <h2>MCP metadata integration</h2>
+                <p>Kent&#333;XPP connects to your D365 environment metadata via the Model Context Protocol (MCP) to enrich analysis with runtime context.</p>
+            </div>
+
+            <div class="card-grid card-grid-2">
+                <div class="card">
+                    <h3>AOT Explorer</h3>
+                    <p>Browse your Application Object Tree directly from the dashboard &mdash; search classes, tables, forms, enums, and EDTs. View inheritance hierarchies, table field definitions, form data sources, and extension chains without opening Visual Studio.</p>
+                </div>
+                <div class="card">
+                    <h3>Context-Aware Rules</h3>
+                    <p>When MCP metadata is available, rules can verify table index definitions, check field counts on queried tables, validate security privilege assignments, and assess the actual impact of findings against the live object model.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Customization -->
+        <section class="section section-divider">
+            <div class="section-header">
+                <span class="section-label">Customization</span>
+                <h2>Configurable to your standards</h2>
+                <p>Every team has different conventions, risk tolerance, and focus areas. Kent&#333;XPP adapts to yours.</p>
+            </div>
+
+            <div class="card-grid card-grid-2">
+                <div class="card">
+                    <h3>Custom Rules</h3>
+                    <p>Define organization-specific rules using regex patterns with configurable severity, category, file type targeting, and reference documentation links. Rules are managed through the web dashboard and applied automatically to every scan.</p>
+                </div>
+                <div class="card">
+                    <h3>Rule Presets</h3>
+                    <p>Create named rule configurations for different contexts &mdash; a strict preset for production release gates, a relaxed preset for early development, a security-focused preset for compliance audits. Switch between presets without reconfiguring individual rules.</p>
+                </div>
+                <div class="card">
+                    <h3>Naming Conventions</h3>
+                    <p>Configure your organization's model prefix, accepted class prefixes, and naming patterns. Kent&#333;XPP validates that classes, methods, and variables follow your conventions rather than imposing a fixed standard.</p>
+                </div>
+                <div class="card">
+                    <h3>Package Ownership</h3>
+                    <p>Define which packages belong to your organization using pattern matching. Owned packages receive higher confidence scoring. ISV exclusion patterns are configurable, ensuring third-party vendor code is filtered without accidentally excluding your customizations that share a prefix.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Delivery -->
+        <section class="section section-divider">
+            <div class="section-header">
+                <span class="section-label">Delivery</span>
+                <h2>Web dashboard + CLI</h2>
+            </div>
+
+            <div class="card-grid card-grid-2">
+                <div class="card">
+                    <h3>Web Dashboard</h3>
+                    <p>Self-hosted Next.js application with guided setup wizard, repository management, scan history, trend visualization, and rule administration. Runs locally or on your infrastructure &mdash; your source code never leaves your network.</p>
+                </div>
+                <div class="card">
+                    <h3>CLI for CI/CD</h3>
+                    <p>Install via npm and integrate into your build pipelines. Run scans from the command line, enforce quality gates based on finding thresholds, and generate reports as part of your automated delivery process.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section id="pricing" class="section">
+            <div class="section-header">
+                <span class="section-label">Pricing</span>
+                <h2>Simple, transparent pricing</h2>
+            </div>
+
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-tier">Free</div>
+                    <div class="pricing-price">$0</div>
+                    <div class="pricing-period">no credit card required</div>
+                    <ul class="pricing-features">
+                        <li>Up to 500 elements per scan</li>
+                        <li>All 78+ analysis rules</li>
+                        <li>Web dashboard</li>
+                        <li>Single machine</li>
+                    </ul>
+                    <a href="#" class="btn btn-outline pricing-btn" onclick="return false;">Coming Soon</a>
+                </div>
+
+                <div class="pricing-card pricing-card-featured">
+                    <div class="pricing-badge">Most Popular</div>
+                    <div class="pricing-tier">Team</div>
+                    <div class="pricing-price">$49<span class="pricing-unit">/mo</span></div>
+                    <div class="pricing-period">14-day free trial included</div>
+                    <ul class="pricing-features">
+                        <li>Unlimited elements per scan</li>
+                        <li>All 78+ analysis rules</li>
+                        <li>Custom rules engine</li>
+                        <li>Rule presets</li>
+                        <li>Web dashboard + CLI</li>
+                        <li>Up to 5 machine activations</li>
+                        <li>Trend tracking &amp; reporting</li>
+                        <li>Branch delta comparison</li>
+                        <li>Dead code analysis</li>
+                    </ul>
+                    <a href="#" class="btn btn-product pricing-btn" onclick="return false;">Coming Soon</a>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-tier">Partner</div>
+                    <div class="pricing-price">Custom</div>
+                    <div class="pricing-period">for ISVs &amp; consulting firms</div>
+                    <ul class="pricing-features">
+                        <li>Everything in Team</li>
+                        <li>Unlimited activations</li>
+                        <li>Multi-tenant support</li>
+                        <li>Priority support</li>
+                        <li>Custom rule development</li>
+                    </ul>
+                    <a href="contact.html" class="btn btn-outline pricing-btn">Contact Us</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="section" style="text-align: center; padding-top: 0;">
+            <p style="color: #8b949e; margin-bottom: 24px;">Questions about Kent&#333;XPP or interested in a demo?</p>
+            <a href="contact.html" class="btn btn-product">Get in Touch</a>
+        </section>
+
+        <footer class="site-footer">
+            <p>&copy; 2026 Subarashi LLC. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <a href="sandbox.html" class="sandbox-link" aria-label="Sandbox"></a>
+</body>
+</html>
