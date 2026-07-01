@@ -4,7 +4,7 @@
     <script data-goatcounter="https://subarashillc.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kent&#333;XPP - Static Analysis for D365 F&amp;O X++ Code</title>
+    <title>Kent&#333;XPP - Static Analysis &amp; AI Assistant for D365 F&amp;O X++ Code</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -40,7 +40,7 @@
                 </svg>
             </div>
             <h1>Kent<span class="product-accent">&#333;</span>XPP</h1>
-            <p>Static analysis for Microsoft Dynamics 365 Finance &amp; Operations X++ source code. Identify performance bottlenecks, security vulnerabilities, transaction integrity issues, and code quality problems before they reach production.</p>
+            <p>Static analysis and AI-assisted investigation for Microsoft Dynamics 365 Finance &amp; Operations X++ source code. 109+ rules catch performance bottlenecks, DML anti-patterns, security vulnerabilities, transaction integrity issues, data flow defects, and code quality problems. A built-in AI assistant trained on your codebase helps investigate findings and reason about architecture.</p>
             <div class="hero-cta">
                 <a href="#pricing" class="btn btn-product">Get Started</a>
                 <a href="#how-it-works" class="btn btn-outline">How It Works</a>
@@ -57,9 +57,9 @@
 
             <div class="highlights">
                 <div class="highlight-card">
-                    <span class="highlight-icon" style="color: #C75B1E;">78+</span>
+                    <span class="highlight-icon" style="color: #C75B1E;">109+</span>
                     <h3>Analysis Rules</h3>
-                    <p>Rules across six categories targeting the patterns and anti-patterns specific to D365 F&amp;O development.</p>
+                    <p>Rules across seven categories targeting the patterns and anti-patterns specific to D365 F&amp;O development.</p>
                 </div>
                 <div class="highlight-card">
                     <span class="highlight-icon" style="color: #C75B1E;">A&ndash;F</span>
@@ -78,33 +78,37 @@
         <section class="section section-divider">
             <div class="section-header">
                 <span class="section-label">What It Catches</span>
-                <h2>Six categories of analysis</h2>
+                <h2>Seven categories of analysis</h2>
             </div>
 
-            <div class="card-grid card-grid-3">
+            <div class="card-grid card-grid-2">
                 <div class="card">
                     <h3>Performance</h3>
-                    <p>Select-in-loop, insert-in-loop, missing index hints, unbounded queries, and other patterns that degrade runtime performance in production workloads.</p>
-                </div>
-                <div class="card">
-                    <h3>Security</h3>
-                    <p>SQL injection via dynamic query construction, hardcoded credentials, missing authorization checks, and insecure data handling patterns.</p>
-                </div>
-                <div class="card">
-                    <h3>Transactions</h3>
-                    <p>DML statements outside transaction scope, missing ttsBegin/ttsCommit pairs, and transaction boundary violations that risk data integrity.</p>
+                    <p>Select-in-loop, insert-in-loop, missing set-based operations, unbounded queries, container operations in loops, display methods not cached, and other patterns that degrade runtime performance in production workloads. 29 rules.</p>
                 </div>
                 <div class="card">
                     <h3>Code Quality</h3>
-                    <p>Excessive nesting, overly long methods, empty catch blocks, missing CoC next calls, dead code, and structural complexity metrics.</p>
+                    <p>Empty methods and loops, excessive nesting, overly long methods, swallowed exceptions, missing CoC next calls, deprecated API usage, overlayering detection, unreachable code, and structural complexity metrics. 23 rules.</p>
                 </div>
                 <div class="card">
                     <h3>Naming</h3>
-                    <p>Non-standard class prefixes, method naming violations, variable casing, and naming patterns that conflict with your organization's model conventions.</p>
+                    <p>Non-standard class prefixes, method naming violations, variable casing, extension and event handler class suffixes, EDT naming, and naming patterns that conflict with your organization's model conventions. 17 rules.</p>
+                </div>
+                <div class="card">
+                    <h3>Security</h3>
+                    <p>SQL injection via dynamic query construction, unparameterized WHERE values, hardcoded credentials, missing authorization checks, and insecure data handling patterns. 12 rules.</p>
+                </div>
+                <div class="card">
+                    <h3>Logic &amp; Data Flow</h3>
+                    <p>Buffers modified but never persisted, variables read before assignment, select-then-selectForUpdate race conditions, unreachable code after unconditional returns, redundant conditions, null reference risks, and infinite loop detection. 11 rules.</p>
                 </div>
                 <div class="card">
                     <h3>Metadata</h3>
-                    <p>Table field configurations, missing delete actions, form data source issues, security privilege definitions, and EDT/enum structural problems.</p>
+                    <p>CacheLookup vs TableGroup mismatches, missing delete actions, EDT length validation, table index configurations, form data source issues, security privilege definitions, and menu item structural problems. 9 rules.</p>
+                </div>
+                <div class="card">
+                    <h3>Transactions</h3>
+                    <p>DML statements outside transaction scope, unbalanced ttsBegin/ttsCommit pairs, generic catch blocks inside tts scope, user dialogs holding database locks, retry statements without counters, and early returns inside transaction scope. 8 rules.</p>
                 </div>
             </div>
         </section>
@@ -130,7 +134,7 @@
                     <div class="flow-step-number">2</div>
                     <div class="flow-step-content">
                         <h3>Pass 1 &mdash; Pattern Scan</h3>
-                        <p>Source files are preprocessed &mdash; comments stripped, strings masked, class and method boundaries identified. Each file is then run against enabled rules using regex-based pattern matching. XML metadata files (tables, forms, security) are parsed and analyzed against metadata-specific rules. Findings are assigned severity and confidence levels, with file-type-aware severity adjustment based on impact tier classification.</p>
+                        <p>Source files are preprocessed &mdash; comments stripped, strings masked, class and method boundaries identified. A full recursive descent parser simultaneously builds a structural AST, extracting DML statement metadata (modifiers, WHERE clauses, JOINs, aggregates, field mappings). Each file is then run against enabled rules using both regex-based pattern matching and AST-powered structural analysis. XML metadata files are parsed and analyzed against metadata-specific rules. Findings are assigned severity and confidence levels, with file-type-aware severity adjustment based on impact tier classification.</p>
                     </div>
                 </div>
 
@@ -145,9 +149,101 @@
                 <div class="flow-step">
                     <div class="flow-step-number">4</div>
                     <div class="flow-step-content">
-                        <h3>Results &amp; Reporting</h3>
-                        <p>Findings are surfaced in a web dashboard with per-file grades, severity breakdowns, trend tracking across scans, and exportable reports. Branch delta comparison shows what changed between branches. Dead code analysis identifies unreferenced classes and methods. Business impact assessment prioritizes the findings that matter most to your operations.</p>
+                        <h3>Learning &amp; Reporting</h3>
+                        <p>Post-scan hooks record baselines, compute trend deltas against previous scans, and profile table DML access patterns. Findings are surfaced in a web dashboard with per-file grades, severity breakdowns, trend tracking across scans, and exportable reports. User feedback on findings drives adaptive severity adjustments over time.</p>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Assistant -->
+        <section class="section section-divider">
+            <div class="section-header">
+                <span class="section-label">AI Assistant</span>
+                <h2>Bring Your Own Model</h2>
+                <p>Kent&#333;XPP includes a built-in AI assistant that connects to your choice of inference backend &mdash; no data leaves your network unless you choose a cloud provider.</p>
+            </div>
+
+            <div class="card-grid card-grid-2">
+                <div class="card">
+                    <h3>Multi-Provider Support</h3>
+                    <p>Connect to Ollama, MLX (Apple Silicon native), Azure OpenAI, OpenAI, Anthropic, or GitHub Models. Switch providers at runtime via the Settings UI. Local inference keeps your source code entirely on-premises.</p>
+                </div>
+                <div class="card">
+                    <h3>LoRA Fine-Tuning Pipeline</h3>
+                    <p>Train a custom LoRA adapter on your own X++ codebase. Extraction scripts generate training data from your scan results, class hierarchies, and call graphs. Serve the fine-tuned model locally via MLX for domain-specific responses.</p>
+                </div>
+                <div class="card">
+                    <h3>Tool-Calling Integration</h3>
+                    <p>The AI assistant can fetch files from your repository, search your codebase, query Azure DevOps work items, trace call graph references, and look up class/table metadata via MCP &mdash; grounding every response in your actual code.</p>
+                </div>
+                <div class="card">
+                    <h3>Context-Aware Responses</h3>
+                    <p>Ask questions from any page and the assistant automatically receives relevant context &mdash; scan findings on a file detail page, class relationships on the baseline page, branch differences on the delta page. AI-powered rule generation creates new analysis rules from natural language descriptions.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Beyond Static Analysis -->
+        <section class="section section-divider">
+            <div class="section-header">
+                <span class="section-label">Beyond Static Analysis</span>
+                <h2>Deeper visibility into your codebase</h2>
+                <p>Kent&#333;XPP goes beyond rule-based scanning with structural analysis, dead code detection, and cross-branch comparison.</p>
+            </div>
+
+            <div class="card-grid card-grid-2">
+                <div class="card">
+                    <h3>AST Baseline</h3>
+                    <p>Pre-parsed class definitions, method signatures, variable scopes, and caller-to-callee call graph edges. Browse class hierarchies, visualize dependency relationships in an interactive graph, and track table field access patterns across the codebase.</p>
+                </div>
+                <div class="card">
+                    <h3>Walking Dead</h3>
+                    <p>Multi-layer dead code detection combining static analysis, metadata analysis, AOT reference scanning, call graph traversal, and runtime verification. A weighted confidence algorithm accounts for indirect references and reflection. ISV-aware &mdash; understands third-party integration patterns.</p>
+                </div>
+                <div class="card">
+                    <h3>Branch Delta</h3>
+                    <p>Compare TFVC branches to identify file differences, unique files, and code changes. Side-by-side syntax-highlighted diff viewer with X++ gutter markers shows exactly what changed between any two branches.</p>
+                </div>
+                <div class="card">
+                    <h3>Build Intelligence</h3>
+                    <p>Azure DevOps pipeline analysis and compilation error parsing. Identify build failures, track error patterns across builds, and correlate compilation issues with code changes.</p>
+                </div>
+                <div class="card">
+                    <h3>Config Dependencies</h3>
+                    <p>Discovers parameter dependencies across D365 layers &mdash; maps which parameter tables, number sequences, and feature flags your custom code relies on and validates their configuration state.</p>
+                </div>
+                <div class="card">
+                    <h3>Integration Scan</h3>
+                    <p>Maps external system connections to D365 &mdash; identifies OData endpoints, DMF integrations, custom services, and third-party API calls across your codebase.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning Capabilities -->
+        <section class="section section-divider">
+            <div class="section-header">
+                <span class="section-label">Learning</span>
+                <h2>Gets smarter with every scan</h2>
+                <p>Kent&#333;XPP learns from your codebase and your feedback to improve analysis accuracy over time.</p>
+            </div>
+
+            <div class="card-grid card-grid-2">
+                <div class="card">
+                    <h3>Table Profiler</h3>
+                    <p>Learns DML access patterns from your code and classifies tables into usage tiers &mdash; configuration, reference, transactional, low-volume. Context-aware rules use these profiles to adjust finding severity based on actual table usage.</p>
+                </div>
+                <div class="card">
+                    <h3>Convention Inference</h3>
+                    <p>Auto-detects naming conventions from your codebase &mdash; class prefixes, method styles, table naming patterns, EDT patterns. Provides a data-driven view of your team's actual conventions rather than imposing assumptions.</p>
+                </div>
+                <div class="card">
+                    <h3>Trend Analysis</h3>
+                    <p>Scan-over-scan finding deltas with regression and improvement tracking. See which rules are trending up or down, identify files that are improving or deteriorating, and track code quality over time.</p>
+                </div>
+                <div class="card">
+                    <h3>Adaptive Severity</h3>
+                    <p>User ratings on individual findings feed back into confidence scoring. When developers mark findings as helpful or dismiss them as false positives, Kent&#333;XPP adjusts future severity to match your team's priorities.</p>
                 </div>
             </div>
         </section>
@@ -233,7 +329,7 @@
                     <div class="pricing-period">no credit card required</div>
                     <ul class="pricing-features">
                         <li>Up to 500 elements per scan</li>
-                        <li>All 78+ analysis rules</li>
+                        <li>All 109+ analysis rules</li>
                         <li>Web dashboard</li>
                         <li>Single machine</li>
                     </ul>
@@ -247,11 +343,14 @@
                     <div class="pricing-period">14-day free trial included</div>
                     <ul class="pricing-features">
                         <li>Unlimited elements per scan</li>
-                        <li>All 78+ analysis rules</li>
+                        <li>All 109+ analysis rules</li>
                         <li>Custom rules engine</li>
                         <li>Rule presets</li>
+                        <li>AI assistant (BYOM)</li>
+                        <li>LoRA fine-tuning pipeline</li>
                         <li>Web dashboard + CLI</li>
                         <li>Up to 5 machine activations</li>
+                        <li>AST baseline &amp; call graph</li>
                         <li>Trend tracking &amp; reporting</li>
                         <li>Branch delta comparison</li>
                         <li>Dead code analysis</li>
