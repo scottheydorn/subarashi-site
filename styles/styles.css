@@ -655,6 +655,25 @@ button[type="submit"]:disabled {
     margin: 0;
 }
 
+/* ===== Sandbox Link ===== */
+.sandbox-link {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 9999;
+    width: 32px;
+    height: 32px;
+    opacity: 0.4;
+    transition: opacity 0.2s;
+    background-color: #1B9D6B;
+    -webkit-mask: url(../images/sandbox.png) center/contain no-repeat;
+    mask: url(../images/sandbox.png) center/contain no-repeat;
+}
+
+.sandbox-link:hover {
+    opacity: 0.8;
+}
+
 /* ===== Sandbox Project Content ===== */
 .project-section figure {
     margin: 1.5rem 0;
