@@ -4,10 +4,26 @@
     <script data-goatcounter="https://subarashillc.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact - Subarashi LLC</title>
+    <title>Book a Free D365 DevOps Review | Subarashi LLC</title>
+    <meta name="description" content="Book a free 30-minute Dynamics 365 Finance &amp; Operations DevOps review, or ask about a fixed-price package.">
+    <link rel="canonical" href="https://subarashillc.com/contact.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Subarashi LLC">
+    <meta property="og:url" content="https://subarashillc.com/contact.html">
+    <meta property="og:title" content="Book a Free D365 DevOps Review | Subarashi LLC">
+    <meta property="og:description" content="Book a free 30-minute Dynamics 365 Finance &amp; Operations DevOps review, or ask about a fixed-price package.">
+    <meta property="og:image" content="https://subarashillc.com/images/og-card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Book a Free D365 DevOps Review | Subarashi LLC">
+    <meta name="twitter:description" content="Book a free 30-minute Dynamics 365 Finance &amp; Operations DevOps review, or ask about a fixed-price package.">
+    <meta name="twitter:image" content="https://subarashillc.com/images/og-card.png">
     <link rel="stylesheet" href="styles/styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
     <!-- EmailJS SDK -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <script type="text/javascript">
@@ -25,6 +41,7 @@
                 <li><a href="index.html">Home</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="case-studies.html">Case Studies</a></li>
+                <li><a href="resources.html">Resources</a></li>
                 <li><a href="about.html">About</a></li>
                 <li><a href="kentoxpp.html" class="nav-product-link"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 512 512" style="vertical-align: -1px; margin-right: 4px;"><rect width="512" height="512" rx="66.56" fill="#C75B1E"/><rect x="225.280" y="81.920" width="51.200" height="358.400" rx="10.240" fill="#FFFFFF"/><rect x="107.520" y="128.000" width="296.960" height="46.080" rx="10.240" fill="#FFFFFF"/><rect x="128.000" y="296.960" width="138.240" height="40.960" rx="10.240" fill="#FFFFFF" transform="rotate(32 194.560 317.440)"/><rect x="245.760" y="296.960" width="138.240" height="40.960" rx="10.240" fill="#FFFFFF" transform="rotate(-32 317.440 317.440)"/></svg>Kent&#333;XPP</a></li>
                 <li><a href="contact.html" class="active">Contact</a></li>
@@ -41,6 +58,10 @@
         </div>
 
         <section class="section">
+            <div class="section-header">
+                <h2>Book a free 30-minute D365 DevOps review</h2>
+                <p>Tell us a little about your environment and we'll reply within one business day to schedule a call.</p>
+            </div>
             <div class="contact-layout">
                 <div class="contact-info">
                     <p>Send an email or complete the form to start a conversation about your project.</p>
@@ -66,6 +87,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="company">Company <span class="label-optional">(optional)</span></label>
+                            <input type="text" id="company" name="company" autocomplete="organization">
+                        </div>
+
+                        <div class="form-group">
                             <label for="phone">Phone</label>
                             <input type="tel" id="phone" name="phone">
                         </div>
@@ -73,9 +99,15 @@
                         <div class="form-group">
                             <label for="subject">Subject</label>
                             <select id="subject" name="subject">
-                                <option value="general">General Inquiry</option>
-                                <option value="services">Services Information</option>
-                                <option value="consultation">Request a Consultation</option>
+                                <option value="consultation">Free 30-minute DevOps review</option>
+                                <option value="health-check">DevOps Health Check</option>
+                                <option value="pipeline-automation">Pipeline Automation</option>
+                                <option value="code-quality-gate">X++ Code Quality Gate</option>
+                                <option value="operations-runbook">Operations Runbook</option>
+                                <option value="git-migration">TFVC to Git Migration</option>
+                                <option value="time-and-materials">Time &amp; materials support</option>
+                                <option value="kentoxpp">Kent&#333;XPP</option>
+                                <option value="partner">Partner / subcontract inquiry</option>
                                 <option value="other">Other</option>
                             </select>
                         </div>
@@ -88,24 +120,36 @@
                         <button type="submit" id="submitButton">Send Message</button>
                     </form>
                     <div id="formStatus"></div>
+                    <p class="form-footnote">Partners and ISVs: subcontract and white-label engagements welcome.</p>
                 </div>
             </div>
         </section>
 
         <footer class="site-footer">
+            <p class="footer-meta"><a href="mailto:info@subarashillc.com">info@subarashillc.com</a> &middot; <a href="https://www.linkedin.com/in/scottheydorn/" target="_blank" rel="noopener noreferrer">LinkedIn</a> &middot; Veteran-owned &middot; Virginia, USA</p>
             <p>&copy; 2026 Subarashi LLC. All rights reserved.</p>
         </footer>
     </div>
 
-    <a href="sandbox.html" class="sandbox-link" aria-label="Sandbox"></a>
 
     <script>
+    // Pre-select the Subject from ?subject=<key> so CTAs land on the right option.
+    (function() {
+        const key = new URLSearchParams(window.location.search).get('subject');
+        if (!key) return;
+        const select = document.getElementById('subject');
+        if (select && Array.from(select.options).some(o => o.value === key)) {
+            select.value = key;
+        }
+    })();
+
     function sendEmail(event) {
         event.preventDefault();
 
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
         const phone = document.getElementById('phone').value;
+        const company = document.getElementById('company').value;
         const subjectSelect = document.getElementById('subject');
         const subjectValue = subjectSelect.value;
         const subjectText = subjectSelect.options[subjectSelect.selectedIndex].text;
@@ -113,14 +157,32 @@
 
         let subjectLine = "";
         switch(subjectValue) {
-            case "general":
-                subjectLine = "General Inquiry from Website";
-                break;
-            case "services":
-                subjectLine = "Services Information Request";
-                break;
             case "consultation":
-                subjectLine = "Consultation Request";
+                subjectLine = "Free 30-minute DevOps review request";
+                break;
+            case "health-check":
+                subjectLine = "Package inquiry: DevOps Health Check";
+                break;
+            case "pipeline-automation":
+                subjectLine = "Package inquiry: Pipeline Automation";
+                break;
+            case "code-quality-gate":
+                subjectLine = "Package inquiry: X++ Code Quality Gate";
+                break;
+            case "operations-runbook":
+                subjectLine = "Package inquiry: Operations Runbook";
+                break;
+            case "git-migration":
+                subjectLine = "Package inquiry: TFVC to Git Migration";
+                break;
+            case "time-and-materials":
+                subjectLine = "Time & materials support inquiry";
+                break;
+            case "kentoxpp":
+                subjectLine = "KentoXPP waitlist / inquiry";
+                break;
+            case "partner":
+                subjectLine = "Partner / subcontract inquiry";
                 break;
             case "other":
                 subjectLine = "Website Inquiry";
@@ -137,9 +199,10 @@
             from_name: name,
             from_email: email,
             phone: phone || "Not provided",
+            company: company || "Not provided",
             subject: subjectLine,
             subject_category: subjectText,
-            message: message,
+            message: (company ? "Company: " + company + "\n\n" : "") + message,
             to_email: "info@subarashillc.com"
         };
 

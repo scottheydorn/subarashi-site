@@ -655,25 +655,6 @@ button[type="submit"]:disabled {
     margin: 0;
 }
 
-/* ===== Sandbox Link (fixed) ===== */
-.sandbox-link {
-    position: fixed;
-    bottom: 24px;
-    right: 24px;
-    z-index: 9999;
-    width: 32px;
-    height: 32px;
-    opacity: 0.4;
-    transition: opacity 0.2s;
-    background-color: #1B9D6B;
-    -webkit-mask: url(../images/sandbox.png) center/contain no-repeat;
-    mask: url(../images/sandbox.png) center/contain no-repeat;
-}
-
-.sandbox-link:hover {
-    opacity: 0.8;
-}
-
 /* ===== Sandbox Project Content ===== */
 .project-section figure {
     margin: 1.5rem 0;
@@ -1333,4 +1314,379 @@ p {
         flex-direction: column;
         align-items: center;
     }
+}
+
+/* ===== Services: packages, steps, compare, FAQ, CTA band ===== */
+.page-header .hero-cta {
+    justify-content: flex-start;
+    margin-top: 28px;
+}
+
+.package-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    align-items: stretch;
+}
+
+.package-card {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    scroll-margin-top: 88px;
+}
+
+.package-card-featured {
+    border-color: #1B9D6B;
+}
+
+.package-card-featured:hover {
+    border-color: #22b87d;
+}
+
+.package-card .pricing-badge {
+    background-color: #1B9D6B;
+}
+
+.package-card .pricing-tier {
+    font-size: 18px;
+    margin: 0 0 8px;
+    line-height: 1.4;
+}
+
+.package-meta {
+    font-size: 12px;
+    color: #8b949e;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.package-price {
+    display: block;
+    font-family: 'Satoshi', sans-serif;
+    font-size: 30px;
+    font-weight: 700;
+    color: #1B9D6B;
+    margin-bottom: 16px;
+}
+
+.package-price .pricing-unit {
+    font-size: 16px;
+}
+
+.package-summary {
+    color: #8b949e;
+    font-size: 15px;
+    line-height: 1.7;
+    margin: 0 0 20px;
+}
+
+.package-list-label {
+    font-size: 12px;
+    font-weight: 400;
+    color: #e6edf3;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 4px;
+}
+
+.package-card .pricing-features {
+    margin-bottom: 16px;
+}
+
+.package-card .pricing-features li::before {
+    color: #1B9D6B;
+}
+
+.package-excludes {
+    font-size: 13px;
+    color: #6e7681;
+    line-height: 1.6;
+    margin: 0 0 24px;
+}
+
+.package-excludes strong {
+    font-weight: 400;
+    color: #8b949e;
+}
+
+.package-card .btn {
+    margin-top: auto;
+}
+
+.package-note {
+    font-size: 13px;
+    color: #8b949e;
+    margin: 12px 0 0;
+}
+
+.package-footnote {
+    color: #8b949e;
+    font-size: 15px;
+    margin: 32px 0 0;
+}
+
+/* Green numbered steps (site accent, not product accent) */
+.flow-primary .flow-step-number {
+    background-color: #1B9D6B;
+}
+
+/* Compare table */
+.table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.compare-table th:first-child,
+.compare-table td:first-child {
+    width: 22%;
+    white-space: nowrap;
+}
+
+/* FAQ */
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.faq-item {
+    background-color: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 8px;
+    padding: 0 24px;
+    transition: border-color 0.2s;
+}
+
+.faq-item:hover,
+.faq-item[open] {
+    border-color: #30363d;
+}
+
+.faq-item summary {
+    cursor: pointer;
+    list-style: none;
+    padding: 20px 0;
+    font-size: 16px;
+    color: #e6edf3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.faq-item summary::-webkit-details-marker {
+    display: none;
+}
+
+.faq-item summary::after {
+    content: "+";
+    color: #1B9D6B;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.faq-item[open] summary::after {
+    content: "\2212";
+}
+
+.faq-item summary:focus-visible {
+    outline: 2px solid #1B9D6B;
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+.faq-item p {
+    color: #8b949e;
+    font-size: 15px;
+    line-height: 1.8;
+    margin: 0;
+    padding: 0 0 20px;
+}
+
+/* Compact two-column list */
+.compact-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 32px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.compact-list li {
+    color: #8b949e;
+    font-size: 15px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.compact-list li::before {
+    content: "\2013";
+    color: #1B9D6B;
+    position: absolute;
+    left: 0;
+}
+
+/* CTA band */
+.cta-band {
+    background-color: #161b22;
+    border: 1px solid #21262d;
+    border-radius: 8px;
+    padding: 48px 32px;
+    text-align: center;
+}
+
+.cta-band h2 {
+    font-size: 26px;
+    margin: 0 0 12px;
+}
+
+.cta-band p {
+    color: #8b949e;
+    font-size: 16px;
+    margin: 0 0 28px;
+}
+
+@media (max-width: 768px) {
+    .compact-list {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-band {
+        padding: 36px 20px;
+    }
+
+    .cta-band h2 {
+        font-size: 22px;
+    }
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* ===== Homepage package strip ===== */
+.package-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 16px;
+}
+
+.package-mini {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 20px;
+    color: inherit;
+}
+
+.package-mini:hover {
+    color: inherit;
+    border-color: #1B9D6B;
+}
+
+.package-mini h3 {
+    font-size: 15px;
+    margin: 0 0 8px;
+    line-height: 1.5;
+}
+
+.package-mini .package-meta {
+    margin-bottom: 10px;
+}
+
+.package-mini .package-price {
+    font-size: 22px;
+    margin: auto 0 0;
+}
+
+.section-footnote {
+    color: #8b949e;
+    font-size: 15px;
+    margin: 24px 0 0;
+}
+
+.section-link {
+    display: inline-block;
+    margin-top: 32px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+/* ===== Contact additions ===== */
+.label-optional {
+    text-transform: none;
+    letter-spacing: 0;
+    color: #6e7681;
+}
+
+.form-footnote {
+    color: #8b949e;
+    font-size: 14px;
+    margin: 20px 0 0;
+}
+
+/* ===== Badge ===== */
+.badge {
+    display: inline-block;
+    border: 1px solid #1B9D6B;
+    color: #1B9D6B;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.badge-row {
+    margin: 20px 0 0 !important;
+}
+
+/* ===== Case study related links ===== */
+.related-links {
+    margin: 24px 0 0 !important;
+    font-size: 14px !important;
+    color: #6e7681 !important;
+}
+
+/* ===== Resources ===== */
+.resource-card h3 a {
+    color: #e6edf3;
+}
+
+.resource-card h3 a:hover {
+    color: #1B9D6B;
+}
+
+.resource-meta {
+    margin-top: 16px !important;
+    font-size: 12px !important;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #6e7681 !important;
+}
+
+/* ===== Footer meta line ===== */
+.site-footer .footer-meta {
+    color: #8b949e;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+.site-footer .footer-meta a {
+    color: #8b949e;
+}
+
+.site-footer .footer-meta a:hover {
+    color: #1B9D6B;
 }
