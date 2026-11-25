@@ -1677,3 +1677,20 @@ p {
     font-size: 14px !important;
     color: #6e7681 !important;
 }
+
+/* ===== Resources ===== */
+.resource-card h3 a {
+    color: #e6edf3;
+}
+
+.resource-card h3 a:hover {
+    color: #1B9D6B;
+}
+
+.resource-meta {
+    margin-top: 16px !important;
+    font-size: 12px !important;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #6e7681 !important;
+}
