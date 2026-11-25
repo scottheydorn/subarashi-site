@@ -1653,3 +1653,20 @@ p {
     font-size: 14px;
     margin: 20px 0 0;
 }
+
+/* ===== Badge ===== */
+.badge {
+    display: inline-block;
+    border: 1px solid #1B9D6B;
+    color: #1B9D6B;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.badge-row {
+    margin: 20px 0 0 !important;
+}
