@@ -41,6 +41,10 @@
         </div>
 
         <section class="section">
+            <div class="section-header">
+                <h2>Book a free 30-minute D365 DevOps review</h2>
+                <p>Tell us a little about your environment and we'll reply within one business day to schedule a call.</p>
+            </div>
             <div class="contact-layout">
                 <div class="contact-info">
                     <p>Send an email or complete the form to start a conversation about your project.</p>
@@ -66,6 +70,11 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="company">Company <span class="label-optional">(optional)</span></label>
+                            <input type="text" id="company" name="company" autocomplete="organization">
+                        </div>
+
+                        <div class="form-group">
                             <label for="phone">Phone</label>
                             <input type="tel" id="phone" name="phone">
                         </div>
@@ -73,9 +82,15 @@
                         <div class="form-group">
                             <label for="subject">Subject</label>
                             <select id="subject" name="subject">
-                                <option value="general">General Inquiry</option>
-                                <option value="services">Services Information</option>
-                                <option value="consultation">Request a Consultation</option>
+                                <option value="consultation">Free 30-minute DevOps review</option>
+                                <option value="health-check">DevOps Health Check</option>
+                                <option value="pipeline-automation">Pipeline Automation</option>
+                                <option value="code-quality-gate">X++ Code Quality Gate</option>
+                                <option value="operations-runbook">Operations Runbook</option>
+                                <option value="git-migration">TFVC to Git Migration</option>
+                                <option value="time-and-materials">Time &amp; materials support</option>
+                                <option value="kentoxpp">Kent&#333;XPP</option>
+                                <option value="partner">Partner / subcontract inquiry</option>
                                 <option value="other">Other</option>
                             </select>
                         </div>
@@ -88,6 +103,7 @@
                         <button type="submit" id="submitButton">Send Message</button>
                     </form>
                     <div id="formStatus"></div>
+                    <p class="form-footnote">Partners and ISVs: subcontract and white-label engagements welcome.</p>
                 </div>
             </div>
         </section>
@@ -100,12 +116,23 @@
     <a href="sandbox.html" class="sandbox-link" aria-label="Sandbox"></a>
 
     <script>
+    // Pre-select the Subject from ?subject=<key> so CTAs land on the right option.
+    (function() {
+        const key = new URLSearchParams(window.location.search).get('subject');
+        if (!key) return;
+        const select = document.getElementById('subject');
+        if (select && Array.from(select.options).some(o => o.value === key)) {
+            select.value = key;
+        }
+    })();
+
     function sendEmail(event) {
         event.preventDefault();
 
         const name = document.getElementById('name').value;
         const email = document.getElementById('email').value;
         const phone = document.getElementById('phone').value;
+        const company = document.getElementById('company').value;
         const subjectSelect = document.getElementById('subject');
         const subjectValue = subjectSelect.value;
         const subjectText = subjectSelect.options[subjectSelect.selectedIndex].text;
@@ -113,14 +140,32 @@
 
         let subjectLine = "";
         switch(subjectValue) {
-            case "general":
-                subjectLine = "General Inquiry from Website";
-                break;
-            case "services":
-                subjectLine = "Services Information Request";
-                break;
             case "consultation":
-                subjectLine = "Consultation Request";
+                subjectLine = "Free 30-minute DevOps review request";
+                break;
+            case "health-check":
+                subjectLine = "Package inquiry: DevOps Health Check";
+                break;
+            case "pipeline-automation":
+                subjectLine = "Package inquiry: Pipeline Automation";
+                break;
+            case "code-quality-gate":
+                subjectLine = "Package inquiry: X++ Code Quality Gate";
+                break;
+            case "operations-runbook":
+                subjectLine = "Package inquiry: Operations Runbook";
+                break;
+            case "git-migration":
+                subjectLine = "Package inquiry: TFVC to Git Migration";
+                break;
+            case "time-and-materials":
+                subjectLine = "Time & materials support inquiry";
+                break;
+            case "kentoxpp":
+                subjectLine = "KentoXPP waitlist / inquiry";
+                break;
+            case "partner":
+                subjectLine = "Partner / subcontract inquiry";
                 break;
             case "other":
                 subjectLine = "Website Inquiry";
@@ -137,9 +182,10 @@
             from_name: name,
             from_email: email,
             phone: phone || "Not provided",
+            company: company || "Not provided",
             subject: subjectLine,
             subject_category: subjectText,
-            message: message,
+            message: (company ? "Company: " + company + "\n\n" : "") + message,
             to_email: "info@subarashillc.com"
         };
 
